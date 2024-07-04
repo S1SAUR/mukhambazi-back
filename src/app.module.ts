@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MusicModule } from './music/music.module';
 
 @Module({
   imports: [
@@ -11,10 +12,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       port: 3306,
       username: 'root',
       password: 'S1sa.123',
-      database: 'Chakrulo',
+      database: 'chakrulo',
       autoLoadEntities: true,
       synchronize: true,
-    })
+    }),
+    MusicModule
   ],
   controllers: [AppController],
   providers: [AppService],
