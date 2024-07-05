@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MusicController } from './music.controller';
-import { MusicService } from './music.service';
+import { MusicController } from './musics.scontroller';
+import { MusicService } from './musics.service';
 
 describe('MusicController', () => {
   let controller: MusicController;

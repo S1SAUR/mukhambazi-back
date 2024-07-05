@@ -4,11 +4,14 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class Music {
 
     @PrimaryGeneratedColumn()
+
     id:number
 
     @Column()
+
     name:string
 
     @Column()
+    
     url:string
 }

@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { MusicServices } from './music.service';
-import { CreateMusicDto } from './dto/create-music.dto';
-import { UpdateMusicDto } from './dto/update-music.dto';
+import { MusicServices } from './musics.service';
+import { CreateMusicDto } from './dto/create-musics.dto';
+import { UpdateMusicDto } from './dto/update-musics.dto';
 
 @Controller('music')
 export class MusicControllers {
-  
+
   constructor(private readonly musicService: MusicServices) {}
 
   @Post()

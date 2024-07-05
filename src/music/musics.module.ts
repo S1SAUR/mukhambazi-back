@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { MusicServices } from './music.service';
-import { MusicControllers } from './music.controller';
+import { MusicServices } from './musics.service';
+import { MusicControllers } from './musics.scontroller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Music } from './entities/music.entity';
 import { MusicRepositories } from './musics.repository';
