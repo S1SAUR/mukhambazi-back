@@ -7,39 +7,41 @@ import { UpdateMusicDto } from "./dto/update-music.dto"
 
 
 @Injectable()
-export class MusicRepository {
+export class MusicRepositories {
   constructor(
     @InjectRepository(Music)
-    private readonly repositori: Repository<Music>,
+    private readonly musicsRepository: Repository<Music>,
   ) {}
 
   findAll() {
-    return this.repositori
+    return this.musicsRepository
     .createQueryBuilder('music')
     .getMany()
   }
 
   findOne(id: number) {
-    return this.repositori
+    return this.musicsRepository
     .createQueryBuilder('music')
     .where('music.id = :id',{id})
     .getMany()
   }
 
   create(data: CreateMusicDto) {
-    return this.repositori.save(data)
+    return this.musicsRepository.save(data)
   }
 
-  async remove(id: number) {}
+  remove(id: number) {
+    return this.musicsRepository.remove(id)
+  }
    
 
   async update(id: number, data: UpdateMusicDto) {
-    await this.repositori
+    await this.musicsRepository
     .createQueryBuilder('music')
     .update()
     .set(data)
     .where('music.id = :id',{id})
 
-    return this.repositori.findOneBy({id})
+    return this.musicsRepository.findOneBy({id})
   }
 }
