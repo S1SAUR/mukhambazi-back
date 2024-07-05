@@ -8,6 +8,7 @@ import { UpdateMusicDto } from "./dto/update-music.dto"
 
 @Injectable()
 export class MusicRepositories {
+  
   constructor(
     @InjectRepository(Music)
     private readonly musicsRepository: Repository<Music>,

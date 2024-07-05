@@ -5,6 +5,7 @@ import { UpdateMusicDto } from './dto/update-music.dto';
 
 @Controller('music')
 export class MusicControllers {
+  
   constructor(private readonly musicService: MusicServices) {}
 
   @Post()
