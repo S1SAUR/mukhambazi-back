@@ -31,18 +31,23 @@ export class MusicRepositories {
     return this.musicsRepository.save(data)
   }
 
-  remove(id: number) {
-    return this.musicsRepository.softDelete(id)
+  async remove(id: number) {
+    await this.musicsRepository.softDelete(id)
+
+    return this.musicsRepository
+    .createQueryBuilder('music')
+    .withDeleted()
+    .where('music.id = :id',{id})
+    .getOne()
   }
    
 
   async update(id: number, data: UpdateMusicDto) {
-    await this.musicsRepository
-    .createQueryBuilder('music')
-    .update()
-    .set(data)
-    .where('music.id = :id',{id})
+    await this.musicsRepository.update(id,data)
 
-    return this.musicsRepository.findOneBy({id})
+    return this.musicsRepository
+    .createQueryBuilder('music')
+    .where('music.id = :id',{id})
+    .getOne()
   }
 }
