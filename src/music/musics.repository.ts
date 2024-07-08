@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import { Music } from "./entities/music.entity"
+import { MusicEntity } from "./entities/music.entity"
 import { Repository } from "typeorm"
 import { CreateMusicDto } from "./dto/create-musics.dto"
 import { UpdateMusicDto } from "./dto/update-musics.dto"
@@ -10,8 +10,8 @@ import { UpdateMusicDto } from "./dto/update-musics.dto"
 export class MusicRepositories {
 
   constructor(
-    @InjectRepository(Music)
-    private readonly musicsRepository: Repository<Music>,
+    @InjectRepository(MusicEntity)
+    private readonly musicsRepository: Repository<MusicEntity>,
   ) {}
 
   findAll() {
@@ -32,7 +32,7 @@ export class MusicRepositories {
   }
 
   remove(id: number) {
-    return this.musicsRepository.remove(id)
+    return this.musicsRepository.softDelete(id)
   }
    
 
