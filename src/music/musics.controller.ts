@@ -18,17 +18,17 @@ export class MusicControllers {
     return this.musicService.findAll();
   }
 
-  @Get(Number(':id'))
+  @Get(':id')
   findOne(@Param('id') id: string) {
     return this.musicService.findOne(+id);
   }
 
-  @Patch(Number(':id'))
+  @Patch(':id')
   update(@Param('id') id: string, @Body() updateMusicDto: UpdateMusicDto) {
     return this.musicService.update(+id, updateMusicDto);
   }
 
-  @Delete(Number(':id'))
+  @Delete(':id')
   remove(@Param('id') id: string) {
     return this.musicService.remove(+id);
   }

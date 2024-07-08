@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { AuthorEntity } from "src/authors/entities/author.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class MusicEntity {
@@ -8,6 +9,9 @@ export class MusicEntity {
 
     @Column()
     name: string
+
+    @ManyToOne(() => AuthorEntity,(autor) => autor.musics)
+    author:AuthorEntity
 
     @Column()
     url: string
@@ -20,4 +24,5 @@ export class MusicEntity {
 
     @DeleteDateColumn()
     delatedAt: Date
+    
 }
