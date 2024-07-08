@@ -9,30 +9,30 @@ import { UpdateAuthorDto } from "./dto/update-author.dto"
 
 
 @Injectable()
-export class AuthorRepositories {
+export class AthorRepository {
 
   constructor(
     @InjectRepository(AuthorEntity)
     private readonly authorRepository: Repository<AuthorEntity>,
   ) {}
 
-  findAll() {
+  async  findAll() {
     return this.authorRepository
     .createQueryBuilder('author')
     .leftJoinAndSelect('author.musics','m')
     .getMany()
   }
 
-  findOne(id: number) {
-    return this.authorRepository
+  async findOne(id: number) {
+    return await this.authorRepository
     .createQueryBuilder('author')
     .leftJoinAndSelect('author.musics','m')
     .where('author.id = :id',{id})
     .getMany()
   }
 
-  create(data: CreateAuthorDto) {
-    return this.authorRepository.save(data)
+  async create(data: CreateAuthorDto) {
+    return await this.authorRepository.save(data)
   }
 
   async remove(id: number) {

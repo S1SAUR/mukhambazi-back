@@ -1,31 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { AuthorRepositories } from './authors.repository';
+import { AthorRepository } from './authors.repository';
 
 @Injectable()
 export class AuthorsService {
 
-  constructor(private readonly AutorRepository:AuthorRepositories){}
+  constructor(private readonly AutorRepository:AthorRepository){}
 
 
-  create(createAuthorDto: CreateAuthorDto) {
-    return this.AutorRepository.create(createAuthorDto);
+  async create(createAuthorDto: CreateAuthorDto) {
+    return await this.AutorRepository.create(createAuthorDto);
   }
 
-  findAll() {
-    return this.AutorRepository.findAll();
+  async findAll() {
+    return await this.AutorRepository.findAll();
   }
 
-  findOne(id: number) {
-    return this.AutorRepository.findOne(id);
+  async findOne(id: number) {
+    return await this.AutorRepository.findOne(id);
   }
 
-  update(id: number, updateAuthorDto: UpdateAuthorDto) {
-    return this.AutorRepository.update(id,updateAuthorDto);
+  async update(id: number, updateAuthorDto: UpdateAuthorDto) {
+    return await this.AutorRepository.update(id,updateAuthorDto);
   }
 
-  remove(id: number) {
-    return this.AutorRepository.remove(id);
+  async remove(id: number) {
+    return await this.AutorRepository.remove(id);
   }
 }

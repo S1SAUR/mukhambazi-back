@@ -14,6 +14,9 @@ export class MusicEntity {
     author:AuthorEntity
 
     @Column()
+    authorId: number
+
+    @Column()
     url: string
 
     @CreateDateColumn()
@@ -24,5 +27,5 @@ export class MusicEntity {
 
     @DeleteDateColumn()
     delatedAt: Date
-    
+
 }

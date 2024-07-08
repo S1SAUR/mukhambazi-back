@@ -1,4 +1,4 @@
-import { IsString } from "class-validator"
+import { IsNumber, IsString } from "class-validator"
 
 export class CreateMusicDto {
 
@@ -7,4 +7,7 @@ export class CreateMusicDto {
 
     @IsString()
     url: string
+
+    @IsNumber()
+    authorId: number
 }
