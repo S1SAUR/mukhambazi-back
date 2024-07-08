@@ -1,5 +1,6 @@
+import { AlbumEntity } from "src/albums/entities/album.entity";
 import { MusicEntity } from "src/music/entities/music.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class AuthorEntity {
@@ -27,4 +28,7 @@ export class AuthorEntity {
 
     @DeleteDateColumn()
     delatedAt: Date
+
+    @OneToOne(() => AlbumEntity, (album) => album.author)
+    album: AlbumEntity;
 }
