@@ -11,6 +11,6 @@ export class CreateAlbumDto {
     @IsString()
     releaseDate: string;
 
-    // @IsNumber()
-    // authorId: number;
+    @IsNumber()
+    authorId: number;
 }
