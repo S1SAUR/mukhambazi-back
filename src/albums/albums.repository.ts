@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AlbumEntity } from "./entities/album.entity";
 import { Repository } from "typeorm";
@@ -7,39 +7,49 @@ import { UpdateAlbumDto } from "./dto/update-album.dto";
 
 @Injectable()
 export class AlbumsRepository {
-    constructor(@InjectRepository(AlbumEntity)
-                private albumRepo: Repository<AlbumEntity>
+    constructor(
+        @InjectRepository(AlbumEntity)
+        private readonly albumRepo: Repository<AlbumEntity>
     ) {}
 
-    create(data: CreateAlbumDto) {
-        const album = this.albumRepo.create(data)
-        return this.albumRepo.save(data)
+    async create(data: CreateAlbumDto): Promise<AlbumEntity> {
+        const album = this.albumRepo.create(data);
+        return await this.albumRepo.save(album);
     }
 
-    findAll() {
-        return this.albumRepo.createQueryBuilder('album')
-        .leftJoinAndSelect('album.author', 'avtori')
-        .leftJoinAndSelect('avtori.musics', 'musikebi')
-        .getMany()
+    async findAll() {
+        return await this.albumRepo.createQueryBuilder('album')
+            .leftJoinAndSelect('album.author', 'author')
+            .leftJoinAndSelect('author.musics', 'musics')
+            .getMany();
     }
 
-    findOne(id: number) {
-        return this.albumRepo.createQueryBuilder('album')
-        .andWhere('album.id = :id', {id})
-        .getMany()
+    async findOne(id: number) {
+        const album = await this.albumRepo.createQueryBuilder('album')
+            .leftJoinAndSelect('album.author', 'author')
+            .leftJoinAndSelect('author.musics', 'musics')
+            .where('album.id = :id', { id })
+            .getOne();
+
+        return album;
     }
 
     async update(id: number, data: UpdateAlbumDto) {
-        await this.albumRepo.createQueryBuilder('album')
-        .update()
-        .set(data)
-        .andWhere('album.id = :id', {id})
-        .execute()
-
-        return this.albumRepo.findOneBy({id})
+        await this.albumRepo.update(id,data)
+    
+        return this.albumRepo
+        .createQueryBuilder('album')
+        .where('album.id = :id',{id})
+        .getOne()
     }
 
-    remove(id: number) {
-        return this.albumRepo.delete(id)
-    }
+    async remove(id: number) {
+        await this.albumRepo.softDelete(id)
+    
+        return this.albumRepo
+        .createQueryBuilder('album')
+        .withDeleted()
+        .where('album.id = :id',{id})
+        .getOne()
+      }
 }

@@ -1,7 +1,7 @@
 import { ModulesContainer } from "@nestjs/core";
 import { IsDate } from "class-validator";
 import { AuthorEntity } from "src/authors/entities/author.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, UpdateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class AlbumEntity {
@@ -17,11 +17,20 @@ export class AlbumEntity {
     @Column({type: "varchar"})
     releaseDate: string;
 
+    @Column()
+    authorId: number
 
-    @OneToOne(() => AuthorEntity, (author) => author.album)
+    @CreateDateColumn()
+    createdAt: Date
+
+    @UpdateDateColumn()
+    updatedAt: Date
+
+    @DeleteDateColumn()
+    delatedAt: Date
+
+
+    @ManyToOne(() => AuthorEntity, (author) => author.album)
     @JoinColumn()
     author: AuthorEntity;
-
-    // @Column()
-    // authorId: number
 }
