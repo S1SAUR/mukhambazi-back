@@ -35,6 +35,16 @@ export class AthorRepository {
     return await this.authorRepository.save(data)
   }
 
+  async update(id: number, data: UpdateAuthorDto) {
+    
+    await this.authorRepository.update(id,data)
+
+    return this.authorRepository
+    .createQueryBuilder('author')
+    .where('author.id = :id',{id})
+    .getOne()
+  }
+
   async remove(id: number) {
     await this.authorRepository.softDelete(id)
 
@@ -45,14 +55,4 @@ export class AthorRepository {
     .getOne()
   }
    
-
-  async update(id: number, data: UpdateAuthorDto) {
-    
-    await this.authorRepository.update(id,data)
-
-    return this.authorRepository
-    .createQueryBuilder('author')
-    .where('author.id = :id',{id})
-    .getOne()
-  }
 }

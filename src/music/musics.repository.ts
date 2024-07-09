@@ -31,6 +31,15 @@ export class MusicRepositories {
     return this.musicsRepository.save(data)
   }
 
+  async update(id: number, data: UpdateMusicDto) {
+    await this.musicsRepository.update(id,data)
+
+    return this.musicsRepository
+    .createQueryBuilder('music')
+    .where('music.id = :id',{id})
+    .getOne()
+  }
+
   async remove(id: number) {
     await this.musicsRepository.softDelete(id)
 
@@ -40,14 +49,5 @@ export class MusicRepositories {
     .where('music.id = :id',{id})
     .getOne()
   }
-   
-
-  async update(id: number, data: UpdateMusicDto) {
-    await this.musicsRepository.update(id,data)
-
-    return this.musicsRepository
-    .createQueryBuilder('music')
-    .where('music.id = :id',{id})
-    .getOne()
-  }
+  
 }
