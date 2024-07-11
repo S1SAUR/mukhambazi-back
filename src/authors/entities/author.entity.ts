@@ -29,6 +29,6 @@ export class AuthorEntity {
     @DeleteDateColumn()
     delatedAt: Date
 
-    @OneToOne(() => AlbumEntity, (album) => album.author)
+    @OneToMany(() => AlbumEntity, (album) => album.author)
     album: AlbumEntity;
 }
