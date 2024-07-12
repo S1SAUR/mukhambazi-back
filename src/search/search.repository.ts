@@ -18,20 +18,29 @@ export class SearchRepository {
 
   async search(search: string) {
 
-     const music = this.musicRepository
+     let music = await this.musicRepository
     .createQueryBuilder('music')
     .where('music.name LIKE :search',{search: `${search.search}%`})
     .getMany()
 
-    const album =  this.albumRepository
+    let album = await this.albumRepository
     .createQueryBuilder('album')
     .leftJoinAndSelect('album.author', 'author')
     .leftJoinAndSelect('author.musics', 'musics')
-    .where('album.title LIKE :search',{search: `${search.search}%`})
+    .where('album.name LIKE :search',{search: `${search.search}%`})
     .getMany()
 
-    return Promise.all([music,album]).then((resault) => {
-        return [...resault]
-    })
-  } 
+
+   let musicAndAlbum = [music,album]
+   let newarr = []
+
+    for(let i = 0;i < musicAndAlbum.length;i++){
+      if(musicAndAlbum[i].length != 0){
+        newarr.push(musicAndAlbum[i])
+      }
+    }
+    
+    return newarr
+     
+  }
 }
