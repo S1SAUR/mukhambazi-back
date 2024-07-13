@@ -41,6 +41,5 @@ export class SearchRepository {
     }
     
     return newarr
-     
   }
 }
