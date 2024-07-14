@@ -7,6 +7,7 @@ import { AuthorsModule } from './authors/authors.module';
 import { AlbumModule } from './albums/albums.module';
 import { SearchModule } from './search/search.module';
 
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -22,9 +23,10 @@ import { SearchModule } from './search/search.module';
     MusicModule,
     AuthorsModule,
     AlbumModule,
-    SearchModule
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}

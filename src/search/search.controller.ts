@@ -8,7 +8,7 @@ export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
   @Get(':search')
-  search(@Param() search: string) {
+  search(@Param('search') search: string) {
     return this.searchService.search(search);
   }
 

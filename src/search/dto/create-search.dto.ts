@@ -1,4 +1,1 @@
-import { IsString } from "class-validator";
-
-export class CreateSearchDto {
-}
+export class CreateSearchDto {}

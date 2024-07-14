@@ -1,1 +1,1 @@
-export class SearchEntity {}
+export class Search {}

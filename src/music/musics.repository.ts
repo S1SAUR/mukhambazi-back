@@ -50,4 +50,11 @@ export class MusicRepositories {
     .getOne()
   }
   
+  async search(search:string){
+    return this.musicsRepository
+    .createQueryBuilder('music')
+    .where('music.name LIKE :search',{search: `${search}%`})
+    .getMany()
+    
+  }
 }
