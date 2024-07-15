@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MusicModule } from './music/musics.module';
 import { AuthorsModule } from './authors/authors.module';
 import { AlbumModule } from './albums/albums.module';
+import { SearchModule } from './search/search.module';
+
 
 @Module({
   imports: [
@@ -20,9 +22,11 @@ import { AlbumModule } from './albums/albums.module';
     }),
     MusicModule,
     AuthorsModule,
-    AlbumModule
+    AlbumModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}

@@ -52,4 +52,14 @@ export class AlbumsRepository {
         .where('album.id = :id',{id})
         .getOne()
       }
+    
+    async search(search:string){
+        return await this.albumRepo
+        .createQueryBuilder('album')
+        .leftJoinAndSelect('album.author', 'author')
+        .leftJoinAndSelect('author.musics', 'musics')
+        .where('album.name LIKE :search',{search: `${search}%`})
+        .getMany()
+    }
+    
 }

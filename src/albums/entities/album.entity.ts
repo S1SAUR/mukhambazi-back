@@ -9,7 +9,7 @@ export class AlbumEntity {
     id: number;
     
     @Column({type: "varchar"})
-    title: string;
+    name: string;
 
     @Column({type: "varchar"})
     artistName: string;

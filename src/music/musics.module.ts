@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MusicEntity } from './entities/music.entity';
 import { MusicRepositories } from './musics.repository';
 import { MusicControllers } from './musics.controller';
+import { SearchModule } from 'src/search/search.module';
+import { SearchService } from 'src/search/search.service';
 
 @Module({
   imports:[TypeOrmModule.forFeature([MusicEntity])],
@@ -11,3 +13,4 @@ import { MusicControllers } from './musics.controller';
   providers: [MusicServices,MusicRepositories],
 })
 export class MusicModule {}
+
