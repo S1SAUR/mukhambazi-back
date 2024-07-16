@@ -10,10 +10,10 @@ export class UserEntity {
     @Column()
     name: string
 
-    @Column()
+    @Column({unique: true})
     email: string
 
-    @Column({unique: true})
+    @Column()
     @MinLength(8)
     @MaxLength(9)
     password: string
