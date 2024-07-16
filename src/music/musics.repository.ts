@@ -24,7 +24,7 @@ export class MusicRepositories {
     return this.musicsRepository
     .createQueryBuilder('music')
     .where('music.id = :id',{id})
-    .getMany()
+    .getOne()
   }
 
   create(data: CreateMusicDto) {

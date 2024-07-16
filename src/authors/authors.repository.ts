@@ -28,7 +28,7 @@ export class AthorRepository {
     .createQueryBuilder('author')
     .leftJoinAndSelect('author.musics','m')
     .where('author.id = :id',{id})
-    .getMany()
+    .getOne()
   }
 
   async create(data: CreateAuthorDto) {
