@@ -13,7 +13,7 @@ export class UserEntity {
     @Column()
     email: string
 
-    @Column()
+    @Column({unique: true})
     @MinLength(8)
     @MaxLength(9)
     password: string
