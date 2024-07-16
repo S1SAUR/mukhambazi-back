@@ -12,7 +12,7 @@ export class UsersService {
   }
 
   findAll() {
-    return this.usersRepository.findAll;
+    return this.usersRepository.findAll();
   }
 
   findOne(id: number) {
