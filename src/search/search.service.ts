@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSearchDto } from './dto/create-search.dto';
-import { UpdateSearchDto } from './dto/update-search.dto';
 import { MusicRepositories } from 'src/music/musics.repository';
 import { AlbumsRepository } from 'src/albums/albums.repository';
 
@@ -16,17 +14,11 @@ export class SearchService {
     let music = await this.musicRepository.search(search)
     let album = await this.albumRepository.search(search)
     
-  
-    let musicAndAlbum = [music,album]
-    let newarr = []
-  
-    for(let i = 0;i < musicAndAlbum.length;i++){
-      if(musicAndAlbum[i].length != 0){
-        newarr.push(musicAndAlbum[i])
-      }
+    
+    return {
+      music,
+      album
     }
-    if(newarr.length === 0)return `${search} not found`
-    return newarr
   }
 
 }
