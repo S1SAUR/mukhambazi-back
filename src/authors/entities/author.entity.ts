@@ -17,6 +17,9 @@ export class AuthorEntity {
     @Column({type: 'varchar'})
     biography: string
 
+    @Column()
+    image: string
+
     @OneToMany(() => MusicEntity, (music) => music.author)
     musics: MusicEntity[]
 
