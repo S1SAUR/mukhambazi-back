@@ -11,4 +11,7 @@ export class CreateAuthorDto {
 
     @IsString()
     biography: string
+
+    @IsString()
+    image:string
 }

@@ -13,7 +13,7 @@ import { AuthorsModule } from './authors/authors.module';
       port: 3306,
       username: 'root',
       password: 'S1sa.123',
-      database: 'chak',
+      database: 'chakrulo',
       autoLoadEntities: true,
       synchronize: true,
     }),
