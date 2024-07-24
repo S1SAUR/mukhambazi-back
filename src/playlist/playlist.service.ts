@@ -13,18 +13,22 @@ export class PlaylistService {
   }
 
   findAll() {
-    return `This action returns all playlist`;
+    return this.playListRepository.findAll();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} playlist`;
+    return this.playListRepository.findOne(id)
   }
 
   update(id: number, updatePlaylistDto: UpdatePlaylistDto) {
-    return `This action updates a #${id} playlist`;
+    return this.playListRepository.update(id,updatePlaylistDto)
   }
 
   remove(id: number) {
-    return `This action removes a #${id} playlist`;
+    return this.playListRepository.remove(id)
+  }
+
+  findOneUsersAllPlayList(id: number){
+    return this.playListRepository.findOneUsersAllPlayList(id)
   }
 }

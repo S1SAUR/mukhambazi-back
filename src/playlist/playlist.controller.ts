@@ -2,10 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PlaylistService } from './playlist.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
+import { get } from 'http';
 
 @Controller('playlist')
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
+  @Get('/usr')
+  findOneUsersAllPlayList(@Body('id') id: string){
+    return this.playlistService.findOneUsersAllPlayList(+id);
+  }
 
   @Post()
   create(@Body() createPlaylistDto: CreatePlaylistDto) {
@@ -31,4 +36,5 @@ export class PlaylistController {
   remove(@Param('id') id: string) {
     return this.playlistService.remove(+id);
   }
+
 }

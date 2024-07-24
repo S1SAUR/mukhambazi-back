@@ -18,7 +18,7 @@ import { PlaylistModule } from './playlist/playlist.module';
       port: 3306,
       username: 'root',
       password: 'S1sa.123',
-      database: 'chakrulo',
+      database: 'ch',
       autoLoadEntities: true,
       synchronize: true,
     }),
