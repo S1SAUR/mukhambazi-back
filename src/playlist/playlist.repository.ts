@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Column, PrimaryGeneratedColumn, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { PlaylistEntity } from "./entities/playlist.entity";
 import { CreatePlaylistDto } from "./dto/create-playlist.dto";
 import { UpdatePlaylistDto } from "./dto/update-playlist.dto";
 import { MusicEntity } from "src/music/entities/music.entity";
-import { log } from "console";
+
 
 @Injectable()
 export class PlayListRepository {
@@ -15,7 +15,7 @@ export class PlayListRepository {
         private readonly usersRepository: Repository<PlaylistEntity>,
       ) {}
 
-      attachMusics(musicIds: number[]): MusicEntity[]{
+      attach(musicIds: number[]): MusicEntity[]{
         let arr = [] 
         for(let i = 0;i < musicIds.length;i++){
           let music = new MusicEntity()
@@ -53,7 +53,7 @@ export class PlayListRepository {
     
       async create(data: CreatePlaylistDto) {
         let playlist = this.usersRepository.create(data)
-        playlist.musics = this.attachMusics(data.musicIds)
+        playlist.musics = this.attach(data.musicIds)
 
         return this.usersRepository.save(playlist)
         
@@ -66,7 +66,7 @@ export class PlayListRepository {
         let playList = new PlaylistEntity()
         playList.id = id
         Object.assign(playList,Column)
-        playList.musics = this.attachMusics(data.musicIds)
+        playList.musics = this.attach(data.musicIds)
 
         return this.usersRepository.save(playList)
         
