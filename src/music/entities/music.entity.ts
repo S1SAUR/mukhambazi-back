@@ -1,5 +1,6 @@
 import { AuthorEntity } from "src/authors/entities/author.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { PlaylistEntity } from "src/playlist/entities/playlist.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class MusicEntity {
@@ -11,7 +12,10 @@ export class MusicEntity {
     name: string
 
     @ManyToOne(() => AuthorEntity,(autor) => autor.musics)
-    author:AuthorEntity
+    author: AuthorEntity
+
+    @ManyToMany(() => PlaylistEntity, (playlist) => playlist.musics)
+    playLists: PlaylistEntity[]
 
     @Column()
     authorId: number
