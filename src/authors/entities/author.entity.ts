@@ -20,6 +20,9 @@ export class AuthorEntity {
     @Column()
     image: string
 
+    @Column()
+    country: string
+
     @OneToMany(() => MusicEntity, (music) => music.author)
     musics: MusicEntity[]
 

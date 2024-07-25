@@ -28,7 +28,7 @@ export class PlayListRepository {
       findOneUsersAllPlayList(id: number){
         return  this.usersRepository
         .createQueryBuilder('playList')
-        .leftJoinAndSelect('playList.user','user')
+        .leftJoin('playList.user','user')
         .leftJoinAndSelect('playList.musics','musics')
         .where('user.id = :id',{id})
         .getMany()
@@ -37,7 +37,6 @@ export class PlayListRepository {
       async findAll(){
         return await this.usersRepository
         .createQueryBuilder('playList')
-        .leftJoinAndSelect('playList.user','user')
         .leftJoinAndSelect('playList.musics','musics')
         .getMany()
       }
@@ -45,7 +44,6 @@ export class PlayListRepository {
       async findOne(id: number) {
         return await this.usersRepository
         .createQueryBuilder('playList')
-        .leftJoinAndSelect('playList.user','user')
         .leftJoinAndSelect('playList.musics','musics')
         .where('playList.id = :id',{id})
         .getOne()
@@ -60,14 +58,18 @@ export class PlayListRepository {
       }
     
       async update(id: number, data: UpdatePlaylistDto) {
+        console.log(data);
+        
         
         let {musicIds,...Column} = data
 
         let playList = new PlaylistEntity()
         playList.id = id
         Object.assign(playList,Column)
-        playList.musics = this.attach(data.musicIds)
-
+        if(musicIds){
+          playList.musics = this.attach(musicIds)
+        }
+        
         return this.usersRepository.save(playList)
         
       }

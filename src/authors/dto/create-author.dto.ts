@@ -13,5 +13,8 @@ export class CreateAuthorDto {
     biography: string
 
     @IsString()
-    image:string
+    image: string
+
+    @IsString()
+    country: string
 }

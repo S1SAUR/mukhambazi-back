@@ -7,7 +7,7 @@ import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
-  @Get('/usr')
+  @Get('/user')
   findOneUsersAllPlayList(@Body('id') id: string){
     return this.playlistService.findOneUsersAllPlayList(+id);
   }
