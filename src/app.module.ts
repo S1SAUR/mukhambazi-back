@@ -7,6 +7,7 @@ import { AuthorsModule } from './authors/authors.module';
 import { AlbumModule } from './albums/albums.module';
 import { SearchModule } from './search/search.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -26,6 +27,7 @@ import { UsersModule } from './users/users.module';
     AlbumModule,
     SearchModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
