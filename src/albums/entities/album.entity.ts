@@ -1,7 +1,8 @@
 import { ModulesContainer } from "@nestjs/core";
 import { IsDate } from "class-validator";
 import { AuthorEntity } from "src/authors/entities/author.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, UpdateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn } from "typeorm";
+import { MusicEntity } from "src/music/entities/music.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, UpdateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
 @Entity()
 export class AlbumEntity {
@@ -20,6 +21,14 @@ export class AlbumEntity {
     @Column()
     authorId: number
 
+    @ManyToOne(() => AuthorEntity, (author) => author.album)
+    @JoinColumn()
+    author: AuthorEntity;
+
+    @OneToMany(() => MusicEntity, (musics) => musics.album)
+    @JoinColumn()
+    musics: MusicEntity[]
+
     @CreateDateColumn()
     createdAt: Date
 
@@ -28,9 +37,4 @@ export class AlbumEntity {
 
     @DeleteDateColumn()
     delatedAt: Date
-
-
-    @ManyToOne(() => AuthorEntity, (author) => author.album)
-    @JoinColumn()
-    author: AuthorEntity;
 }

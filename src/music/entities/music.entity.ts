@@ -1,5 +1,6 @@
+import { AlbumEntity } from "src/albums/entities/album.entity";
 import { AuthorEntity } from "src/authors/entities/author.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class MusicEntity {
@@ -12,6 +13,9 @@ export class MusicEntity {
 
     @ManyToOne(() => AuthorEntity,(autor) => autor.musics)
     author:AuthorEntity
+    
+    @ManyToOne(() => AlbumEntity, (album) => album.musics)
+    album: AlbumEntity;
 
     @Column()
     authorId: number
