@@ -1,8 +1,7 @@
+
 import { AuthorEntity } from "src/authors/entities/author.entity";
 import { PlaylistEntity } from "src/playlist/entities/playlist.entity";
-
-
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, ManyToOne,OneToMany , PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class MusicEntity {
@@ -13,14 +12,17 @@ export class MusicEntity {
     @Column()
     name: string
 
-    @ManyToOne(() => AuthorEntity,(autor) => autor.musics)
-    author: AuthorEntity
-
     @Column()
     authorId: number
 
     @Column()
     url: string
+
+    @ManyToOne(() => AuthorEntity,(autor) => autor.musics)
+    author: AuthorEntity
+
+    @ManyToMany(() => PlaylistEntity, (playlist) => playlist.musics)
+    playLists: PlaylistEntity[]
 
     @CreateDateColumn()
     createdAt: Date
@@ -31,6 +33,4 @@ export class MusicEntity {
     @DeleteDateColumn()
     delatedAt: Date
 
-    @ManyToMany(() => PlaylistEntity, (playlist) => playlist.musics)
-    playLists: PlaylistEntity[]
 }
