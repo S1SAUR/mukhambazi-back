@@ -14,7 +14,7 @@ export class UserEntity {
     @Column({unique: true})
     email: string
 
-    @Column({select: false})
+    @Column()
     @MinLength(8)
     @MaxLength(9)
     password: string
