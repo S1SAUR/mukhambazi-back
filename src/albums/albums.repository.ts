@@ -14,7 +14,6 @@ export class AlbumsRepository {
     constructor(
         @InjectRepository(AlbumEntity)
         private readonly albumRepo: Repository<AlbumEntity>,
-        private readonly musicService: MusicServices
     ) {}
 
     async create(data: CreateAlbumDto): Promise<AlbumEntity> {
