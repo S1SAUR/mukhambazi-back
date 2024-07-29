@@ -8,6 +8,7 @@ import { AlbumModule } from './albums/albums.module';
 import { SearchModule } from './search/search.module';
 import { UsersModule } from './users/users.module';
 import { PlaylistModule } from './playlist/playlist.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -28,6 +29,7 @@ import { PlaylistModule } from './playlist/playlist.module';
     SearchModule,
     UsersModule,
     PlaylistModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
