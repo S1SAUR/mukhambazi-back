@@ -20,9 +20,6 @@ export class MusicEntity {
     @ManyToOne(() => AuthorEntity,(autor) => autor.musics)
     author: AuthorEntity
 
-    @ManyToMany(() => PlaylistEntity, (playlist) => playlist.musics)
-    playLists: PlaylistEntity[]
-
     @CreateDateColumn()
     createdAt: Date
 
@@ -31,5 +28,8 @@ export class MusicEntity {
 
     @DeleteDateColumn()
     delatedAt: Date
+
+    @ManyToMany(() => PlaylistEntity, (playlist) => playlist.musics)
+    playLists: PlaylistEntity[]
 
 }
