@@ -5,7 +5,7 @@ import { CreateUserDto } from "./dto/create-user.dto"
 import { UpdateUserDto } from "./dto/update-user.dto"
 import { BadRequestException, Injectable } from "@nestjs/common"
 import * as Bcrypt from "bcrypt"
-import { error } from "console"
+
 
 @Injectable()
 export class UsersRepository{
