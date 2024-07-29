@@ -16,7 +16,6 @@ export class UsersRepository{
   ) {}
 
   findUserByEmail(email: string){
-
    return this.usersRepository
     .createQueryBuilder('users')
     .where('users.email = :email',{email})
@@ -72,7 +71,7 @@ export class UsersRepository{
     }
 
     try{
-      this.usersRepository.update(id,user)
+      return await this.usersRepository.update(id,user)
     }catch(err){
       throw new BadRequestException('this email alwredy used')
     }

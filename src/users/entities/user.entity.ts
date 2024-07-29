@@ -1,4 +1,4 @@
-import { MaxLength, MinLength } from "class-validator";
+import { IsStrongPassword, MaxLength, MinLength } from "class-validator";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
@@ -16,6 +16,7 @@ export class UserEntity {
     @Column()
     @MinLength(8)
     @MaxLength(9)
+    @IsStrongPassword()
     password: string
 
     @CreateDateColumn()

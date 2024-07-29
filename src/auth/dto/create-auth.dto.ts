@@ -7,6 +7,5 @@ export class CreateAuthDto {
     email: string
 
     @IsString()
-    @IsStrongPassword()
     password: string
 }

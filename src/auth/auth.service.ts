@@ -14,10 +14,7 @@ export class AuthService {
     if(await Bcrypt.compare(createAuthDto.password,user.password)){
         return 'sucses!'
     }
-   }else{
-    throw new BadRequestException('email not found')
    }
-   throw new BadRequestException('not sucses')
-
+   throw new BadRequestException('bed request')
   }
 }
