@@ -8,27 +8,27 @@ export class PlaylistService {
 
   constructor( private readonly playListRepository: PlayListRepository){}
 
-  create(createPlaylistDto: CreatePlaylistDto) {
-    return this.playListRepository.create(createPlaylistDto);
+  async create(createPlaylistDto: CreatePlaylistDto) {
+    return await this.playListRepository.create(createPlaylistDto);
   }
 
-  findAll() {
-    return this.playListRepository.findAll();
+  async findAll() {
+    return await this.playListRepository.findAll();
   }
 
-  findOne(id: number) {
-    return this.playListRepository.findOne(id)
+  async findOne(id: number) {
+    return await this.playListRepository.findOne(id)
   }
 
-  update(id: number, updatePlaylistDto: UpdatePlaylistDto) {
-    return this.playListRepository.update(id,updatePlaylistDto)
+  async update(id: number, updatePlaylistDto: UpdatePlaylistDto) {
+    return await this.playListRepository.update(id,updatePlaylistDto)
   }
 
-  remove(id: number) {
-    return this.playListRepository.remove(id)
+  async remove(id: number) {
+    return await this.playListRepository.remove(id)
   }
 
-  findOneUsersAllPlayList(id: number){
-    return this.playListRepository.findOneUsersAllPlayList(id)
+  async findOneUsersAllPlayList(id: number){
+    return await this.playListRepository.findOneUsersAllPlayList(id)
   }
 }

@@ -12,7 +12,7 @@ export class PlayListRepository {
 
     constructor(
         @InjectRepository(PlaylistEntity)
-        private readonly usersRepository: Repository<PlaylistEntity>,
+        private readonly playlistRepository: Repository<PlaylistEntity>,
       ) {}
 
       attach(musicIds: number[]): MusicEntity[]{
@@ -25,8 +25,8 @@ export class PlayListRepository {
         return arr
       }
 
-      findOneUsersAllPlayList(id: number){
-        return  this.usersRepository
+      async findOneUsersAllPlayList(id: number){
+        return await this.playlistRepository
         .createQueryBuilder('playList')
         .leftJoin('playList.user','user')
         .leftJoinAndSelect('playList.musics','musics')
@@ -35,14 +35,14 @@ export class PlayListRepository {
       }
     
       async findAll(){
-        return await this.usersRepository
+        return await this.playlistRepository
         .createQueryBuilder('playList')
         .leftJoinAndSelect('playList.musics','musics')
         .getMany()
       }
     
       async findOne(id: number) {
-        return await this.usersRepository
+        return await this.playlistRepository
         .createQueryBuilder('playList')
         .leftJoinAndSelect('playList.musics','musics')
         .where('playList.id = :id',{id})
@@ -50,34 +50,31 @@ export class PlayListRepository {
       }
     
       async create(data: CreatePlaylistDto) {
-        let playlist = this.usersRepository.create(data)
+        let playlist = this.playlistRepository.create(data)
         playlist.musics = this.attach(data.musicIds)
 
-        return this.usersRepository.save(playlist)
+        return this.playlistRepository.save(playlist)
         
       }
     
       async update(id: number, data: UpdatePlaylistDto) {
-        console.log(data);
-        
-        
         let {musicIds,...Column} = data
 
         let playList = new PlaylistEntity()
         playList.id = id
         Object.assign(playList,Column)
         if(musicIds){
-          playList.musics = this.attach(musicIds)
+          playList.musics = await this.attach(musicIds)
         }
         
-        return this.usersRepository.save(playList)
+        return this.playlistRepository.save(playList)
         
       }
     
       async remove(id: number) {
-        await this.usersRepository.softDelete(id)
+        await this.playlistRepository.softDelete(id)
     
-        return this.usersRepository
+        return this.playlistRepository
         .createQueryBuilder('playList')
         .withDeleted()
         .where('playList.id = :id',{id})

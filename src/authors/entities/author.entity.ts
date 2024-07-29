@@ -21,7 +21,7 @@ export class AuthorEntity {
     image: string
 
     @Column()
-    country: string
+    country?: string
 
     @OneToMany(() => MusicEntity, (music) => music.author)
     musics: MusicEntity[]
