@@ -3,7 +3,8 @@ import { UserEntity } from "./entities/user.entity"
 import { Repository } from "typeorm"
 import { CreateUserDto } from "./dto/create-user.dto"
 import { UpdateUserDto } from "./dto/update-user.dto"
-import { Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable } from "@nestjs/common"
+import * as Bcrypt from "bcrypt"
 
 @Injectable()
 export class UsersRepository{
@@ -12,6 +13,13 @@ export class UsersRepository{
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
   ) {}
+
+  findUserByEmail(email: string){
+   return this.usersRepository
+    .createQueryBuilder('users')
+    .where('users.email = :email',{email})
+    .getOne()
+  }
 
   async findAll(){
     return await this.usersRepository
@@ -41,17 +49,29 @@ export class UsersRepository{
   }
 
   async create(data: CreateUserDto) {
-    return await this.usersRepository.save(data)
+    let user = this.usersRepository.create(data)
+    user.password = await Bcrypt.hash(user.password,12)
+    
+    try{
+      return this.usersRepository.save(user)
+    }catch(err){
+      throw new BadRequestException('this email alwredy used')
+    }
+
   }
 
   async update(id: number, data: UpdateUserDto) {
     
-    await this.usersRepository.update(id,data)
+    let user = await this.usersRepository.create(data)
+    if(data.password){
+      user.password = await Bcrypt.hash(data.password,12)
+    }
 
-    return this.usersRepository
-    .createQueryBuilder('users')
-    .where('users.id = :id',{id})
-    .getOne()
+    try{
+      return await this.usersRepository.update(id,user)
+    }catch(err){
+      throw new BadRequestException('this email alwredy used')
+    }
   }
 
   async remove(id: number) {
