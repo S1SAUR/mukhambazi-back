@@ -50,9 +50,7 @@ export class UsersRepository{
 
   async create(data: CreateUserDto) {
     let user = this.usersRepository.create(data)
-    let heshPassword = await Bcrypt.hash(user.password,12)
-    user.password = heshPassword
-    
+    user.password = await Bcrypt.hash(user.password,12)
     
     try{
       return this.usersRepository.save(user)
@@ -66,8 +64,7 @@ export class UsersRepository{
     
     let user = await this.usersRepository.create(data)
     if(data.password){
-      let heshPassword = await Bcrypt.hash(data.password,12)
-      user.password = heshPassword
+      user.password = await Bcrypt.hash(data.password,12)
     }
 
     try{
