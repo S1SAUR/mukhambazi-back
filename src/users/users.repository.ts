@@ -49,9 +49,11 @@ export class UsersRepository{
   }
 
   async create(data: CreateUserDto) {
+    const hashpassword = await Bcrypt.hash(data.password,12)
+
     let user = this.usersRepository.create(data)
-    user.password = await Bcrypt.hash(user.password,12)
-    
+    user.password = hashpassword
+
     try{
       return this.usersRepository.save(user)
     }catch(err){
