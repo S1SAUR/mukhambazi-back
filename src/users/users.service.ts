@@ -33,7 +33,7 @@ export class UsersService {
     try{
       let cookie = request.cookies['jwt']
 
-      let data = await this.jwtService.verifyAsync(cookie)
+      let data = await this.jwtService.verifyAsync(cookie)      
 
       if(!data){
         throw new UnauthorizedException()

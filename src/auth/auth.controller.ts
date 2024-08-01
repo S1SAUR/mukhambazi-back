@@ -9,7 +9,6 @@ export class AuthController {
 
   @Post('/login')
   Login(@Body() createAuthDto: CreateAuthDto, @Res({passthrough: true}) response: Response) {
-    
     return this.authService.LoginUser(createAuthDto,response);
   }
 }
