@@ -1,20 +1,27 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import * as Bcrypt from "bcrypt"
 import { UsersRepository } from 'src/users/users.repository';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UsersRepository){}
+  constructor(
+    private readonly userRepository: UsersRepository,
+    private readonly jwtService: JwtService
+  ){}
 
-  async LoginUser(createAuthDto: CreateAuthDto) {
+  async LoginUser(createAuthDto: CreateAuthDto, response) {
+    
+    let user = await this.userRepository.findUserByEmail(createAuthDto.email)
 
-   let user = await this.userRepository.findUserByEmail(createAuthDto.email)
-   if(user){
-    if(await Bcrypt.compare(createAuthDto.password,user.password)){
-        return 'success!'
+    if(user){
+      if(await Bcrypt.compare(createAuthDto.password,user.password)){
+        let jwt = await this.jwtService.signAsync({id: user.id})   
+        response.cookie('jwt',jwt, {httpOnly: true})       
+          return 'sucses'
+      }
     }
+    throw new BadRequestException('bed request')
    }
-   throw new BadRequestException('bed request')
-  }
 }
