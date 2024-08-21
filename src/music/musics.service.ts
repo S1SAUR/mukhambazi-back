@@ -8,8 +8,8 @@ export class MusicServices {
 
   constructor(private readonly musicRepository:MusicRepositories){}
 
-  create(createMusicDto: CreateMusicDto) {
-    return this.musicRepository.create(createMusicDto);
+  create(createMusicDto: CreateMusicDto, file: Express.Multer.File) {
+    return this.musicRepository.create(createMusicDto, file);
   }
 
   findAll() {
