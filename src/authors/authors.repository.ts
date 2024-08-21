@@ -19,6 +19,7 @@ export class AthorRepository {
     return this.authorRepository
     .createQueryBuilder('author')
     .leftJoinAndSelect('author.musics','m')
+    .leftJoinAndSelect('author.album', 'a')
     .getMany()
   }
 
@@ -26,6 +27,7 @@ export class AthorRepository {
     return await this.authorRepository
     .createQueryBuilder('author')
     .leftJoinAndSelect('author.musics','m')
+    .leftJoinAndSelect('author.album', 'a')
     .where('author.id = :id',{id})
     .getOne()
   }
