@@ -5,6 +5,5 @@ export class CreateMusicDto {
   name: string;
 
   @IsNumber()
-  @IsOptional()
   authorId: number;
 }

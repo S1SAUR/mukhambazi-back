@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
-import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +10,9 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
+      transformOptions: {
+        enableImplicitConversion: true
+      }
     }),
   );
 
@@ -23,7 +25,7 @@ async function bootstrap() {
 
   const express = require('express');
   const cors = require('cors');
-
+  
   app.use(
     cors({
       origin: 'http://localhost:3000', // Your frontend URL
