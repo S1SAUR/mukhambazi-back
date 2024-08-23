@@ -17,13 +17,31 @@ export class MusicRepositories {
   findAll() {
     return this.musicsRepository
     .createQueryBuilder('music')
+    .leftJoin('music.author','a')
+    .select([
+      'a.firstName',
+      'a.lastName',
+      'music.name',
+      'music.url',
+      'music.authorId',
+      'music.id'
+    ])
     .getMany()
   }
 
   findOne(id: number) {
     return this.musicsRepository
     .createQueryBuilder('music')
+    .leftJoin('music.author','a')
     .where('music.id = :id',{id})
+    .select([
+      'a.firstName',
+      'a.lastName',
+      'music.name',
+      'music.url',
+      'music.authorId',
+      'music.id'
+    ])
     .getOne()
   }
 
