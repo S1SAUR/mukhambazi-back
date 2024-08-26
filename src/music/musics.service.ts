@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMusicDto } from './dto/create-musics.dto';
 import { UpdateMusicDto } from './dto/update-musics.dto';
-import {MusicRepositories } from './musics.repository';
+import { MusicRepositories } from './musics.repository';
 
 @Injectable()
 export class MusicServices {
+  constructor(private readonly musicRepository: MusicRepositories) {}
 
-  constructor(private readonly musicRepository:MusicRepositories){}
-
-  create(createMusicDto: CreateMusicDto, file: Express.Multer.File) {
-    return this.musicRepository.create(createMusicDto, file);
+  create(
+    createMusicDto: CreateMusicDto,
+    file: Express.Multer.File,
+    image: Express.Multer.File,
+  ) {
+    return this.musicRepository.create(createMusicDto, file, image);
   }
 
   findAll() {
@@ -21,7 +24,7 @@ export class MusicServices {
   }
 
   update(id: number, updateMusicDto: UpdateMusicDto) {
-    return this.musicRepository.update(id,updateMusicDto);
+    return this.musicRepository.update(id, updateMusicDto);
   }
 
   remove(id: number) {

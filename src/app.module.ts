@@ -20,14 +20,14 @@ import { join } from 'path';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'S1sa.123',
-      database: 'ch',
+      password: 'Mikalal1',
+      database: 'mukhambazi',
       autoLoadEntities: true,
       synchronize: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'mp3Src'),
-      serveRoot: '/mp3Src/'
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads/'
     }),
     MusicModule,
     AuthorsModule,

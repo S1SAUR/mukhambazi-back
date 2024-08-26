@@ -1,15 +1,64 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipeBuilder,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { AlbumService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('album')
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Post()
-  async create(@Body() createAlbumDto: CreateAlbumDto) {
-    return await this.albumService.create(createAlbumDto);
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads/ablumCovers',
+        filename: (req, image, callback) => {
+          const fileExt = extname(image.originalname).toLowerCase();
+          const allowedTypes = ['.jpeg', '.jpg', '.png'];
+          if (!allowedTypes.includes(fileExt)) {
+            return callback(
+              new HttpException(
+                'Invalid file type. Only JPEG images are allowed.',
+                HttpStatus.UNPROCESSABLE_ENTITY,
+              ),
+              fileExt,
+            );
+          }
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(image.originalname);
+          const filename = `${image.originalname.split('.')[0]}-${uniqueSuffix}${ext}`;
+          callback(null, filename);
+        },
+      }),
+    }),
+  )
+  async create(
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({ fileType: 'image/jpeg' })
+        .build({ errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY }),
+    )
+    image: Express.Multer.File,
+    @Body() createAlbumDto: CreateAlbumDto,
+  ) {
+    return await this.albumService.create(createAlbumDto, image);
   }
 
   @Get()
@@ -23,7 +72,10 @@ export class AlbumController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateAlbumDto: UpdateAlbumDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateAlbumDto: UpdateAlbumDto,
+  ) {
     return await this.albumService.update(+id, updateAlbumDto);
   }
 

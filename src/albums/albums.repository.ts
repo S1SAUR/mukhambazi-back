@@ -16,7 +16,7 @@ export class AlbumsRepository {
         private readonly albumRepo: Repository<AlbumEntity>,
     ) {}
 
-    async create(data: CreateAlbumDto): Promise<AlbumEntity> {
+    async create(data: CreateAlbumDto, file: Express.Multer.File): Promise<AlbumEntity> {
         const album = this.albumRepo.create(data)
         album.musics = [];
 
@@ -25,6 +25,10 @@ export class AlbumsRepository {
             music.id = data.musicsIds[i]
             album.musics.push(music)
         }
+
+        const url = `http://localhost:3001/uploads/ablumCovers/${file.filename}`
+
+        album.image = url
 
         return this.albumRepo.save(album);
     }

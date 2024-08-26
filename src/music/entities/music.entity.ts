@@ -1,39 +1,49 @@
-import { AlbumEntity } from "src/albums/entities/album.entity";
-import { AuthorEntity } from "src/authors/entities/author.entity";
-import { PlaylistEntity } from "src/playlist/entities/playlist.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { AlbumEntity } from 'src/albums/entities/album.entity';
+import { AuthorEntity } from 'src/authors/entities/author.entity';
+import { PlaylistEntity } from 'src/playlist/entities/playlist.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class MusicEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @Column()
+  name: string;
 
-    @Column()
-    name: string
+  @Column()
+  authorId: number;
 
-    @Column()
-    authorId: number
+  @Column()
+  url: string;
 
-    @Column()
-    url: string
-    
-    @ManyToOne(() => AuthorEntity,(autor) => autor.musics)
-    author: AuthorEntity
-    
-    @ManyToOne(() => AlbumEntity, (album) => album.musics)
-    album: AlbumEntity;
+  @Column()
+  image: string;
 
-    @ManyToMany(() => PlaylistEntity, (playlist) => playlist.musics)
-    playLists: PlaylistEntity[]
+  @ManyToOne(() => AuthorEntity, (autor) => autor.musics)
+  author: AuthorEntity;
 
-    @CreateDateColumn()
-    createdAt: Date
+  @ManyToOne(() => AlbumEntity, (album) => album.musics)
+  album: AlbumEntity;
 
-    @UpdateDateColumn()
-    updatedAt: Date
+  @ManyToMany(() => PlaylistEntity, (playlist) => playlist.musics)
+  playLists: PlaylistEntity[];
 
-    @DeleteDateColumn()
-    delatedAt: Date
+  @CreateDateColumn()
+  createdAt: Date;
 
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  delatedAt: Date;
 }

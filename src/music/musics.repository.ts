@@ -14,41 +14,47 @@ export class MusicRepositories {
 
   findAll() {
     return this.musicsRepository
-    .createQueryBuilder('music')
-    .leftJoin('music.author','a')
-    .select([
-      'a.firstName',
-      'a.lastName',
-      'music.name',
-      'music.url',
-      'music.authorId',
-      'music.id'
-    ])
-    .getMany()
+      .createQueryBuilder('music')
+      .leftJoin('music.author', 'a')
+      .select([
+        'a.firstName',
+        'a.lastName',
+        'music.name',
+        'music.url',
+        'music.authorId',
+        'music.id',
+      ])
+      .getMany();
   }
 
   findOne(id: number) {
     return this.musicsRepository
-    .createQueryBuilder('music')
-    .leftJoin('music.author','a')
-    .where('music.id = :id',{id})
-    .select([
-      'a.firstName',
-      'a.lastName',
-      'music.name',
-      'music.url',
-      'music.authorId',
-      'music.id'
-    ])
-    .getOne()
+      .createQueryBuilder('music')
+      .leftJoin('music.author', 'a')
+      .where('music.id = :id', { id })
+      .select([
+        'a.firstName',
+        'a.lastName',
+        'music.name',
+        'music.url',
+        'music.authorId',
+        'music.id',
+      ])
+      .getOne();
   }
 
-  async create(data: CreateMusicDto, file: Express.Multer.File) {
+  async create(
+    data: CreateMusicDto,
+    file: Express.Multer.File,
+    image: Express.Multer.File,
+  ) {
     const music = new MusicEntity();
-    const url = `http://localhost:3001/mp3Src/${file.filename}`;
+    const url = `http://localhost:3001/uploads/mp3Src/${file.filename}`;
+    const imageUrl = `http://localhost:3001/uploads/songCovers/${image.filename}`;
     music.name = data.name;
     music.authorId = data.authorId;
     music.url = url;
+    music.image = imageUrl;
     return this.musicsRepository.save(music);
   }
 

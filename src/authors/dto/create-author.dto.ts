@@ -1,20 +1,15 @@
-import { IsString } from "class-validator";
-
+import { IsString } from 'class-validator';
 
 export class CreateAuthorDto {
-    
-    @IsString()
-    firstName: string
+  @IsString()
+  firstName: string;
 
-    @IsString()
-    lastName: string
+  @IsString()
+  lastName: string;
 
-    @IsString()
-    biography: string
+  @IsString()
+  biography: string;
 
-    @IsString()
-    image: string
-
-    @IsString()
-    country: string
+  @IsString()
+  country: string;
 }
