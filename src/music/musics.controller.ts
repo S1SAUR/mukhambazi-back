@@ -13,12 +13,14 @@ import {
   UploadedFiles,
   HttpException,
 } from '@nestjs/common';
+import * as fs from 'fs';
 import { MusicServices } from './musics.service';
 import { CreateMusicDto } from './dto/create-musics.dto';
 import { UpdateMusicDto } from './dto/update-musics.dto';
 import { FileInterceptor, AnyFilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { validateFile } from 'src/common/file-validation.utils';
 
 @Controller('music')
 export class MusicControllers {
@@ -29,46 +31,30 @@ export class MusicControllers {
     AnyFilesInterceptor({
       storage: diskStorage({
         destination: (req, file, callback) => {
-          const destinationPath = file.fieldname === 'image' ? './uploads/songCovers' : './uploads/mp3Src';
+          const destinationPath =
+            file.fieldname === 'image'
+              ? './uploads/songCovers'
+              : './uploads/mp3Src';
+          fs.mkdirSync(destinationPath, { recursive: true });
           callback(null, destinationPath);
         },
         filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);
-          if (file.fieldname === 'image') {
-            const allowedImageTypes = ['.jpeg', '.jpg'];
-            if (!allowedImageTypes.includes(ext.toLowerCase())) {
-              return callback(
-                new HttpException(
-                  'Invalid image file type. Only JPEG images are allowed.',
-                  HttpStatus.UNPROCESSABLE_ENTITY,
-                ),
-                ext,
-              );
-            }
-          } else if (file.fieldname === 'file') {
-            const allowedFileTypes = ['.mp3'];
-            if (!allowedFileTypes.includes(ext.toLowerCase())) {
-              return callback(
-                new HttpException(
-                  'Invalid file type. Only MP3 files are allowed.',
-                  HttpStatus.UNPROCESSABLE_ENTITY,
-                ),
-                ext,
-              );
-            }
-          }
           const filename = `${file.originalname.split('.')[0]}-${uniqueSuffix}${ext}`;
           callback(null, filename);
         },
-      }),})
+      }),
+      fileFilter: validateFile,
+    }),
   )
   async create(
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() createMusicDto: CreateMusicDto,
   ) {
-    const image = files.find(file => file.fieldname === 'image');
-    const file = files.find(file => file.fieldname === 'file');
+    const image = files.find((file) => file.fieldname === 'image');
+    const file = files.find((file) => file.fieldname === 'file');
     return this.musicService.create(createMusicDto, file, image);
   }
 

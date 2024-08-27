@@ -18,6 +18,7 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { validateFile } from 'src/common/file-validation.utils';
 
 @Controller('album')
 export class AlbumController {
@@ -29,17 +30,6 @@ export class AlbumController {
       storage: diskStorage({
         destination: './uploads/ablumCovers',
         filename: (req, image, callback) => {
-          const fileExt = extname(image.originalname).toLowerCase();
-          const allowedTypes = ['.jpeg', '.jpg', '.png'];
-          if (!allowedTypes.includes(fileExt)) {
-            return callback(
-              new HttpException(
-                'Invalid file type. Only JPEG images are allowed.',
-                HttpStatus.UNPROCESSABLE_ENTITY,
-              ),
-              fileExt,
-            );
-          }
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(image.originalname);
@@ -47,6 +37,7 @@ export class AlbumController {
           callback(null, filename);
         },
       }),
+      fileFilter: validateFile
     }),
   )
   async create(

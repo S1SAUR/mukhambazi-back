@@ -18,6 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { validateFile } from 'src/common/file-validation.utils';
 
 @Controller('authors')
 export class AuthorsController {
@@ -30,23 +31,13 @@ export class AuthorsController {
         destination: './uploads/authorImgs',
         filename: (req, image, callback) => {
           const fileExt = extname(image.originalname).toLowerCase();
-          const allowedTypes = ['.jpeg', '.jpg', '.png'];
-          if (!allowedTypes.includes(fileExt)) {
-            return callback(
-              new HttpException(
-                'Invalid file type. Only JPEG images are allowed.',
-                HttpStatus.UNPROCESSABLE_ENTITY,
-              ),
-              fileExt,
-            );
-          }
-
           const uniqueSuffix =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
           const filename = `${image.originalname.split('.')[0]}-${uniqueSuffix}${fileExt}`;
           callback(null, filename);
         },
       }),
+      fileFilter: validateFile
     }),
   )
   create(
