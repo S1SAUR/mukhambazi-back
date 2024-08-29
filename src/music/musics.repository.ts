@@ -55,6 +55,7 @@ export class MusicRepositories {
     music.authorId = data.authorId;
     music.url = url;
     music.image = imageUrl;
+    music.albumId = data.albumId
     return this.musicsRepository.save(music);
   }
 
