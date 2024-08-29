@@ -59,4 +59,11 @@ export class AthorRepository {
       .where('author.id = :id', { id })
       .getOne();
   }
+  async search(search: string) {
+    return await this.authorRepository
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.musics', 'm')
+      .where('author.firstName OR author.firstName LIKE :search', { search: `${search}%` })
+      .getMany();
+  }
 }
