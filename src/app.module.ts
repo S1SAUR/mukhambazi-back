@@ -17,11 +17,11 @@ import { join } from 'path';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: 'chakrulos.cj40ww6mww3k.eu-central-1.rds.amazonaws.com',
       port: 3306,
-      username: 'root',
-      password: 'S1sa.123',
-      database: 'as',
+      username: 'admin',
+      password: 'Dachiko123321',
+      database: 'chakrulodb',
       autoLoadEntities: true,
       synchronize: true,
     }),

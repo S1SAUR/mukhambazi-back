@@ -11,5 +11,5 @@ export class CreateAuthorDto {
   biography: string;
 
   @IsString()
-  country: string;
+  country?: string;
 }
