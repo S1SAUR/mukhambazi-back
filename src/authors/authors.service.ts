@@ -9,8 +9,8 @@ export class AuthorsService {
   constructor(private readonly AutorRepository:AthorRepository){}
 
 
-  async create(createAuthorDto: CreateAuthorDto) {
-    return await this.AutorRepository.create(createAuthorDto);
+  async create(createAuthorDto: CreateAuthorDto, image: Express.Multer.File) {
+    return await this.AutorRepository.create(createAuthorDto, image);
   }
 
   async findAll() {
