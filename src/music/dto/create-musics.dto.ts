@@ -6,9 +6,7 @@ export class CreateMusicDto {
 
   @IsNumber()
   authorId: number;
-    @IsNumber()
-    authorId: number
 
-    @IsNumber()
-    albumId: number
+  @IsNumber()
+  albumId: number
 }
