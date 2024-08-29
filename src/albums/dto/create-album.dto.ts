@@ -13,7 +13,5 @@ export class CreateAlbumDto {
 
     @IsNumber()
     authorId: number;
-
-    @IsArray()
-    musicsIds: number[]
+    
 }

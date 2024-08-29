@@ -51,7 +51,6 @@ export class PlayListRepository {
     
       async create(data: CreatePlaylistDto) {
         let playlist = this.playlistRepository.create(data)
-        playlist.musics = this.attach(data.musicIds)
 
         return this.playlistRepository.save(playlist)
         

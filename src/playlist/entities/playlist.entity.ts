@@ -10,6 +10,9 @@ export class PlaylistEntity {
     @Column()
     title: string
 
+    @Column()
+    discripton: string
+
     @ManyToMany(() => MusicEntity, (music) => music.playLists)
     @JoinTable()
     musics: MusicEntity[]

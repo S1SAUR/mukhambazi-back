@@ -26,7 +26,6 @@ export class AlbumEntity {
     author: AuthorEntity;
 
     @OneToMany(() => MusicEntity, (musics) => musics.album)
-    @JoinColumn()
     musics: MusicEntity[]
 
     @CreateDateColumn()

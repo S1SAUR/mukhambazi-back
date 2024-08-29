@@ -4,8 +4,11 @@ export class CreatePlaylistDto {
     @IsString()
     title: string
 
+    @IsString()
+    discripton: string
+
     @IsArray()
-    musicIds: number[]
+    musicIds?: number[]
 
     @IsNumber()
     userId: number

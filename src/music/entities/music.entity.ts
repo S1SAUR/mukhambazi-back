@@ -16,6 +16,9 @@ export class MusicEntity {
     authorId: number
 
     @Column()
+    albumId: number
+
+    @Column()
     url: string
     
     @ManyToOne(() => AuthorEntity,(autor) => autor.musics)

@@ -19,7 +19,7 @@ import { AuthModule } from './auth/auth.module';
       port: 3306,
       username: 'root',
       password: 'S1sa.123',
-      database: 'ch',
+      database: 'as',
       autoLoadEntities: true,
       synchronize: true,
     }),
