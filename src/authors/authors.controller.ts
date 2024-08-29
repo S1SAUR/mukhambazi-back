@@ -40,7 +40,7 @@ export class AuthorsController {
   create(
     @UploadedFile(
       new ParseFilePipeBuilder()
-        .addFileTypeValidator({ fileType: 'image/jpeg' })
+        .addFileTypeValidator({ fileType: '.(jpeg|jpg|png)' })
         .build({ errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY }),
     )
     image: Express.Multer.File,

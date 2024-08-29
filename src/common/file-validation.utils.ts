@@ -5,7 +5,7 @@ export function validateFile(req, file: Express.Multer.File, callback): void {
   const ext = extname(file.originalname).toLowerCase();
 
   if (file.fieldname === 'image') {
-    const allowedImageTypes = ['.jpeg', '.jpg', 'png'];
+    const allowedImageTypes = ['.jpeg', '.jpg', '.png'];
     if (!allowedImageTypes.includes(ext)) {
       return callback(
         new HttpException(
