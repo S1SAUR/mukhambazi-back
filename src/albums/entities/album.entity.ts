@@ -19,7 +19,10 @@ export class AlbumEntity {
     releaseDate: string;
 
     @Column()
-    authorId: number
+    authorId: number;
+
+    @Column()
+    image: string;
 
     @ManyToOne(() => AuthorEntity, (author) => author.album)
     @JoinColumn()

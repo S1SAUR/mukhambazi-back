@@ -7,8 +7,8 @@ import { AlbumsRepository } from './albums.repository';
 export class AlbumService {
   constructor (private readonly albumRepo: AlbumsRepository) {}
 
-  async create(createAlbumDto: CreateAlbumDto) {
-    return await this.albumRepo.create(createAlbumDto)
+  async create(createAlbumDto: CreateAlbumDto, image: Express.Multer.File) {
+    return await this.albumRepo.create(createAlbumDto, image)
   }
 
   async   findAll() {
