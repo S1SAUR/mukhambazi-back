@@ -19,6 +19,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { validateFile } from 'src/common/file-validation.utils';
+import { getFileName } from 'src/common/file-name.utils';
 
 @Controller('album')
 export class AlbumController {
@@ -30,11 +31,7 @@ export class AlbumController {
       storage: diskStorage({
         destination: './uploads/ablumCovers',
         filename: (req, image, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(image.originalname);
-          const filename = `${image.originalname.split('.')[0]}-${uniqueSuffix}${ext}`;
-          callback(null, filename);
+          callback(null, getFileName(image));
         },
       }),
       fileFilter: validateFile

@@ -12,8 +12,8 @@ export class MusicRepositories {
     private readonly musicsRepository: Repository<MusicEntity>,
   ) {}
 
-  findAll() {
-    return this.musicsRepository
+  async findAll() {
+    return await this.musicsRepository
       .createQueryBuilder('music')
       .leftJoin('music.author', 'a')
       .select([
@@ -61,7 +61,7 @@ export class MusicRepositories {
   async update(id: number, data: UpdateMusicDto) {
     await this.musicsRepository.update(id, data);
 
-    return this.musicsRepository
+    return await this.musicsRepository
       .createQueryBuilder('music')
       .where('music.id = :id', { id })
       .getOne();
@@ -70,7 +70,7 @@ export class MusicRepositories {
   async remove(id: number) {
     await this.musicsRepository.softDelete(id);
 
-    return this.musicsRepository
+    return await this.musicsRepository
       .createQueryBuilder('music')
       .withDeleted()
       .where('music.id = :id', { id })
@@ -78,7 +78,7 @@ export class MusicRepositories {
   }
 
   async search(search: string) {
-    return this.musicsRepository
+    return await this.musicsRepository
       .createQueryBuilder('music')
       .where('music.name LIKE :search', { search: `${search}%` })
       .getMany();

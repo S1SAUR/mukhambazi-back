@@ -17,8 +17,9 @@ import { CreateAuthorDto } from './dto/create-author.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+
 import { validateFile } from 'src/common/file-validation.utils';
+import { getFileName } from 'src/common/file-name.utils';
 
 @Controller('authors')
 export class AuthorsController {
@@ -30,14 +31,10 @@ export class AuthorsController {
       storage: diskStorage({
         destination: './uploads/authorImgs',
         filename: (req, image, callback) => {
-          const fileExt = extname(image.originalname).toLowerCase();
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const filename = `${image.originalname.split('.')[0]}-${uniqueSuffix}${fileExt}`;
-          callback(null, filename);
+          callback(null, getFileName(image));
         },
       }),
-      fileFilter: validateFile
+      fileFilter: validateFile,
     }),
   )
   create(

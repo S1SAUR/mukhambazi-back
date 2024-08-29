@@ -13,7 +13,7 @@ export class AthorRepository {
   ) {}
 
   async findAll() {
-    return this.authorRepository
+    return await this.authorRepository
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.musics', 'm')
       .leftJoinAndSelect('author.album', 'a')
@@ -44,7 +44,7 @@ export class AthorRepository {
   async update(id: number, data: UpdateAuthorDto) {
     await this.authorRepository.update(id, data);
 
-    return this.authorRepository
+    return await this.authorRepository
       .createQueryBuilder('author')
       .where('author.id = :id', { id })
       .getOne();
@@ -53,7 +53,7 @@ export class AthorRepository {
   async remove(id: number) {
     await this.authorRepository.softDelete(id);
 
-    return this.authorRepository
+    return await this.authorRepository
       .createQueryBuilder('author')
       .withDeleted()
       .where('author.id = :id', { id })

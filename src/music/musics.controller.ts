@@ -21,6 +21,7 @@ import { FileInterceptor, AnyFilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { validateFile } from 'src/common/file-validation.utils';
+import { getFileName } from 'src/common/file-name.utils';
 
 @Controller('music')
 export class MusicControllers {
@@ -39,11 +40,7 @@ export class MusicControllers {
           callback(null, destinationPath);
         },
         filename: (req, file, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          const filename = `${file.originalname.split('.')[0]}-${uniqueSuffix}${ext}`;
-          callback(null, filename);
+          callback(null, getFileName(file));
         },
       }),
       fileFilter: validateFile,
