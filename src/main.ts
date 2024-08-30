@@ -16,11 +16,6 @@ async function bootstrap() {
     }),
   );
 
-  app.enableCors({
-    origin: 'https://main.d3pvypseairen5.amplifyapp.com',
-    credentials: true,
-  });
-
   app.use(cookieParser());
 
   const express = require('express');
