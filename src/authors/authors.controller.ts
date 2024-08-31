@@ -16,8 +16,8 @@ import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { diskStorage } from 'multer';
-
+import multer, { diskStorage } from 'multer';
+import * as s3Service from '../common/aws-s3';
 import { validateFile } from 'src/common/file-validation.utils';
 import { getFileName } from 'src/common/file-name.utils';
 
@@ -28,16 +28,10 @@ export class AuthorsController {
   @Post()
   @UseInterceptors(
     FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads/authorImgs',
-        filename: (req, image, callback) => {
-          callback(null, getFileName(image));
-        },
-      }),
       fileFilter: validateFile,
     }),
   )
-  create(
+  async create(
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({ fileType: '.(jpeg|jpg|png)' })
@@ -46,7 +40,9 @@ export class AuthorsController {
     image: Express.Multer.File,
     @Body() createAuthorDto: CreateAuthorDto,
   ) {
-    return this.authorsService.create(createAuthorDto, image);
+    image.originalname = getFileName(image)
+    const url = await this.authorsService.upload(image);
+    return this.authorsService.create(createAuthorDto, url);
   }
 
   @Get()

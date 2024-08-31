@@ -9,12 +9,16 @@ import * as path from "path"
 export class AuthorsService {
 
   constructor(private readonly AutorRepository:AthorRepository){}
+  private readonly s3Client = new s3Service.AWSS3Service(process.env.REGION_CODE, process.env.ACCESS_KEY, process.env.SECRET_KEY)
+  async upload(image: Express.Multer.File) {
+    this.s3Client.uploadObject(image.originalname, image.buffer, image.mimetype)
+    const url = `https://chakrulos.s3.eu-central-1.amazonaws.com/${image.originalname}`
 
-  async create(createAuthorDto: CreateAuthorDto, image: Express.Multer.File) {
-    const s3Client = new s3Service.AWSS3Service('eu-central-1', process.env.ACCESS_KEY, process.env.SECRET_KEY)
-    s3Client.createS3Bucket()
-    s3Client.deleteObject("uploads/images.jpg")
-    return await this.AutorRepository.create(createAuthorDto, image);
+    return url;
+  }
+
+  async create(createAuthorDto: CreateAuthorDto, url: string) {
+    return await this.AutorRepository.create(createAuthorDto, url);
   }
 
   async findAll() {

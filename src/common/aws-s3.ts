@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk';
+import { Expr } from 'aws-sdk/clients/cloudsearchdomain';
 
 export class AWSS3Service {
   region;
@@ -37,15 +38,15 @@ export class AWSS3Service {
     );
   }
 
-  uploadObject(file, key) {
+  uploadObject(fileName: string, file: Buffer, fileType) {
     let s3Client = this.getS3Client();
 
     s3Client.putObject(
       {
         Bucket: 'chakrulos',
-        Key: key,
-        Body: file.buffer,
-        ContentType: file.mimetype,
+        Key: fileName,
+        Body: file,
+        ContentType: fileType
       },
       (error, success) => {
         if (error) {
