@@ -45,15 +45,13 @@ export class MusicRepositories {
 
   async create(
     data: CreateMusicDto,
-    file: Express.Multer.File,
-    image: Express.Multer.File,
+    fileUrl: string,
+    imageUrl: string,
   ) {
     const music = new MusicEntity();
-    const url = `http://localhost:3001/uploads/mp3Src/${file.filename}`;
-    const imageUrl = `http://localhost:3001/uploads/songCovers/${image.filename}`;
     music.name = data.name;
     music.authorId = data.authorId;
-    music.url = url;
+    music.url = fileUrl;
     music.image = imageUrl;
     music.albumId = data.albumId
     return this.musicsRepository.save(music);

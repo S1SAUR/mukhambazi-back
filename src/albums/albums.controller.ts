@@ -17,7 +17,6 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
 import { validateFile } from 'src/common/file-validation.utils';
 import { getFileName } from 'src/common/file-name.utils';
 
@@ -28,13 +27,7 @@ export class AlbumController {
   @Post()
   @UseInterceptors(
     FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads/ablumCovers',
-        filename: (req, image, callback) => {
-          callback(null, getFileName(image));
-        },
-      }),
-      fileFilter: validateFile
+      fileFilter: validateFile,
     }),
   )
   async create(
@@ -46,7 +39,9 @@ export class AlbumController {
     image: Express.Multer.File,
     @Body() createAlbumDto: CreateAlbumDto,
   ) {
-    return await this.albumService.create(createAlbumDto, image);
+    image.originalname = getFileName(image)
+    const url = await this.albumService.upload(image);
+    return await this.albumService.create(createAlbumDto, url);
   }
 
   @Get()

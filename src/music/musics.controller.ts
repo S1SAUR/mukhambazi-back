@@ -30,19 +30,6 @@ export class MusicControllers {
   @Post()
   @UseInterceptors(
     AnyFilesInterceptor({
-      storage: diskStorage({
-        destination: (req, file, callback) => {
-          const destinationPath =
-            file.fieldname === 'image'
-              ? './uploads/songCovers'
-              : './uploads/mp3Src';
-          fs.mkdirSync(destinationPath, { recursive: true });
-          callback(null, destinationPath);
-        },
-        filename: (req, file, callback) => {
-          callback(null, getFileName(file));
-        },
-      }),
       fileFilter: validateFile,
     }),
   )
@@ -52,7 +39,9 @@ export class MusicControllers {
   ) {
     const image = files.find((file) => file.fieldname === 'image');
     const file = files.find((file) => file.fieldname === 'file');
-    return this.musicService.create(createMusicDto, file, image);
+    const fileUrl = await this.musicService.upload(file)
+    const imageUrl = await this.musicService.upload(image)
+    return this.musicService.create(createMusicDto, fileUrl, imageUrl);
   }
 
   @Get()

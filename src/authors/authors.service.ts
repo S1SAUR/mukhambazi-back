@@ -3,7 +3,6 @@ import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AthorRepository } from './authors.repository';
 import * as s3Service from "../common/aws-s3"
-import * as path from "path"
 
 @Injectable()
 export class AuthorsService {
@@ -11,8 +10,8 @@ export class AuthorsService {
   constructor(private readonly AutorRepository:AthorRepository){}
   private readonly s3Client = new s3Service.AWSS3Service(process.env.REGION_CODE, process.env.ACCESS_KEY, process.env.SECRET_KEY)
   async upload(image: Express.Multer.File) {
-    this.s3Client.uploadObject(image.originalname, image.buffer, image.mimetype)
-    const url = `https://chakrulos.s3.eu-central-1.amazonaws.com/${image.originalname}`
+    this.s3Client.uploadObject(`authorImgs/${image.originalname}`, image.buffer, image.mimetype)
+    const url = `https://chakrulos.s3.eu-central-1.amazonaws.com/authorImgs/${image.originalname}`
 
     return url;
   }

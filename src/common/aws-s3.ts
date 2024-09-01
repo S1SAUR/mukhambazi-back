@@ -38,7 +38,7 @@ export class AWSS3Service {
     );
   }
 
-  uploadObject(fileName: string, file: Buffer, fileType) {
+  uploadObject(fileName: string, file: Buffer, fileType: string) {
     let s3Client = this.getS3Client();
 
     s3Client.putObject(
