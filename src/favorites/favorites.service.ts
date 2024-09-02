@@ -7,23 +7,23 @@ import { FavoritesRepository } from './favorites.repository';
 export class FavoritesService {
 
   constructor(private readonly favoriteRepository: FavoritesRepository){}
-  create(createFavoriteDto: CreateFavoriteDto) {
-    return 
+  async create(createFavoriteDto: CreateFavoriteDto) {
+    return await this.favoriteRepository.create(createFavoriteDto)
   }
 
-  findAll() {
-    return `This action returns all favorites`;
+  async findAll() {
+    return await this.favoriteRepository.findAll()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} favorite`;
+  async findOne(id: number) {
+    return await this.favoriteRepository.findOneUserAllFavorite(id)
   }
 
-  update(id: number, updateFavoriteDto: UpdateFavoriteDto) {
-    return `This action updates a #${id} favorite`;
+  async update(id: number, updateFavoriteDto: UpdateFavoriteDto) {
+    return await this.favoriteRepository.update(id, updateFavoriteDto)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} favorite`;
+  async remove(id: number) {
+    return await this.favoriteRepository.remove(id)
   }
 }

@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
+import { FavoritesModule } from './favorites/favorites.module';
 
 
 @Module({
@@ -37,6 +38,7 @@ import { ConfigModule } from '@nestjs/config';
     UsersModule,
     PlaylistModule,
     AuthModule,
+    FavoritesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
