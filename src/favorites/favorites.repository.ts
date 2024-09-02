@@ -32,20 +32,20 @@ export class FavoritesRepository {
       async create(data: CreateFavoriteDto) {
         let favorite = this.favoriteRepository.create(data)
 
-        return this.favoriteRepository.save(favorite)
+        return await this.favoriteRepository.save(favorite)
         
       }
     
       async update(id: number, data: UpdateFavoriteDto) {
         
-        return this.favoriteRepository.update(id, data)
+        return await this.favoriteRepository.update(id, data)
         
       }
     
       async remove(id: number) {
         await this.favoriteRepository.softDelete(id)
     
-        return this.favoriteRepository
+        return await this.favoriteRepository
         .createQueryBuilder('favorite')
         .withDeleted()
         .where('favorite.id = :id',{id})
