@@ -39,7 +39,6 @@ export class FavoritesRepository {
       async update(id: number, data: UpdateFavoriteDto) {
         
         return await this.favoriteRepository.update(id, data)
-        
       }
     
       async remove(id: number) {

@@ -5,6 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UsersRepository } from './users.repository';
 import { JwtModule } from '@nestjs/jwt';
+import { PlayListRepository } from 'src/playlist/playlist.repository';
+import { FavoritesRepository } from 'src/favorites/favorites.repository';
+import { PlaylistModule } from 'src/playlist/playlist.module';
+import { FavoritesModule } from 'src/favorites/favorites.module';
 
 @Module({
   imports:[
@@ -12,7 +16,10 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule.register({
       secret: 'secret',
       signOptions: {expiresIn: '7d'}
-    })],
+    }),
+    PlaylistModule,
+    FavoritesModule
+  ],
   controllers: [UsersController],
   providers: [UsersService,UsersRepository],
   exports: [UsersRepository]

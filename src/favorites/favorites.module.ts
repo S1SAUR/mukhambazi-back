@@ -7,10 +7,9 @@ import { FavoritesRepository } from './favorites.repository';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([FavoriteEntity]),JwtModule.register({
-    secret: 'secret'
-  })],
+  imports:[TypeOrmModule.forFeature([FavoriteEntity])],
   controllers: [FavoritesController],
   providers: [FavoritesService, FavoritesRepository],
+  exports:[FavoritesRepository]
 })
 export class FavoritesModule {}
