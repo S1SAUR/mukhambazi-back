@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsNumber, IsString } from "class-validator";
+import { IsArray, IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateAlbumDto {
     
@@ -13,5 +13,8 @@ export class CreateAlbumDto {
 
     @IsNumber()
     authorId: number;
-    
+
+    @IsNumber()
+    @IsOptional()
+    userId?: number;
 }

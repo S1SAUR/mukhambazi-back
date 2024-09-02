@@ -8,14 +8,7 @@ import * as s3Service from "../common/aws-s3"
 export class AuthorsService {
 
   constructor(private readonly AutorRepository:AthorRepository){}
-  private readonly s3Client = new s3Service.AWSS3Service(process.env.REGION_CODE, process.env.ACCESS_KEY, process.env.SECRET_KEY)
-  async upload(image: Express.Multer.File) {
-    this.s3Client.uploadObject(`authorImgs/${image.originalname}`, image.buffer, image.mimetype)
-    const url = `https://chakrulos.s3.eu-central-1.amazonaws.com/authorImgs/${image.originalname}`
-
-    return url;
-  }
-
+  
   async create(createAuthorDto: CreateAuthorDto, url: string) {
     return await this.AutorRepository.create(createAuthorDto, url);
   }

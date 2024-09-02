@@ -22,10 +22,14 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { validateFile } from 'src/common/file-validation.utils';
 import { getFileName } from 'src/common/file-name.utils';
+import { S3serviceService } from 'src/s3service/s3service.service';
 
 @Controller('music')
 export class MusicControllers {
-  constructor(private readonly musicService: MusicServices) {}
+  constructor(
+    private readonly musicService: MusicServices,
+    private readonly s3service: S3serviceService,
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -39,8 +43,16 @@ export class MusicControllers {
   ) {
     const image = files.find((file) => file.fieldname === 'image');
     const file = files.find((file) => file.fieldname === 'file');
-    const fileUrl = await this.musicService.upload(file)
-    const imageUrl = await this.musicService.upload(image)
+    const fileUrl = await this.s3service.upload(
+      createMusicDto.userId,
+      file,
+      'songSrc',
+    );
+    const imageUrl = await this.s3service.upload(
+      createMusicDto.userId,
+      image,
+      'songImage',
+    );
     return this.musicService.create(createMusicDto, fileUrl, imageUrl);
   }
 

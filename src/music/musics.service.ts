@@ -7,21 +7,6 @@ import * as s3Service from '../common/aws-s3';
 @Injectable()
 export class MusicServices {
   constructor(private readonly musicRepository: MusicRepositories) {}
-  private readonly s3Client = new s3Service.AWSS3Service(
-    process.env.REGION_CODE,
-    process.env.ACCESS_KEY,
-    process.env.SECRET_KEY,
-  );
-  async upload(file: Express.Multer.File) {
-    this.s3Client.uploadObject(
-      `${file.mimetype === 'audio/mpeg' ? 'songSrc' : 'songImage'}/${file.originalname}`,
-      file.buffer,
-      file.mimetype,
-    );
-    const url = `https://chakrulos.s3.eu-central-1.amazonaws.com/${file.mimetype === 'audio/mpeg' ? 'songSrc' : 'songImage'}/${file.originalname}`;
-
-    return url;
-  }
 
   create(
     createMusicDto: CreateMusicDto,
