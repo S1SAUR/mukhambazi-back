@@ -4,9 +4,12 @@ import { FavoritesController } from './favorites.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FavoriteEntity } from './entities/favorite.entity';
 import { FavoritesRepository } from './favorites.repository';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([FavoriteEntity])],
+  imports:[TypeOrmModule.forFeature([FavoriteEntity]),JwtModule.register({
+    secret: 'secret'
+  })],
   controllers: [FavoritesController],
   providers: [FavoritesService, FavoritesRepository],
 })
