@@ -11,6 +11,7 @@ import { PlaylistModule } from './playlist/playlist.module';
 import { AuthModule } from './auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { FavoritesModule } from './favorites/favorites.module';
 
 
 @Module({
@@ -21,7 +22,7 @@ import { join } from 'path';
       port: 3306,
       username: 'root',
       password: 'S1sa.123',
-      database: 'as',
+      database: 'ass',
       autoLoadEntities: true,
       synchronize: true,
     }),
@@ -36,6 +37,7 @@ import { join } from 'path';
     UsersModule,
     PlaylistModule,
     AuthModule,
+    FavoritesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
