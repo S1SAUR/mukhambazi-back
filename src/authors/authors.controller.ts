@@ -53,6 +53,11 @@ export class AuthorsController {
     return this.authorsService.create(createAuthorDto, url);
   }
 
+  @Get('/:category')
+  findWithCategory(@Param("category") category: string) {
+    return this.authorsService.findWithCategory(category)
+  }
+
   @Get()
   findAll() {
     return this.authorsService.findAll();

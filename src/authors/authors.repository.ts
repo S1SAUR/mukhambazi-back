@@ -29,10 +29,29 @@ export class AthorRepository {
       .getOne();
   }
 
+
+  async findWithCategory(category: string) {
+    const categoryHits = ['Hits', 'Charts', 'Tops']
+    const categoryRegions = ['Popular', 'Georgian', 'European']
+    let categ = ''
+    
+    if (categoryHits.includes(category)) categ = 'Category'
+    else if (categoryRegions.includes(category)) categ = 'Region'
+    else categ = 'endpoint does not exist'
+
+    return await this.authorRepository.createQueryBuilder('author')
+    .leftJoinAndSelect('author.musics', 'm')
+    .leftJoinAndSelect('author.album', 'a')
+    .where(`author.${categ} = :category`, { category })
+    .getMany();
+  }
+
+
   async create(data: CreateAuthorDto, url: string) {
     const author = new AuthorEntity();
     author.biography = data.biography;
-    author.country = data.country;
+    author.Region = data.Region;
+    author.Category = data.Category;
     author.firstName = data.firstName;
     author.lastName = data.lastName;
    
