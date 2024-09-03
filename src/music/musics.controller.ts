@@ -20,8 +20,8 @@ import { UpdateMusicDto } from './dto/update-musics.dto';
 import { FileInterceptor, AnyFilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { validateFile } from 'src/common/file-validation.utils';
-import { getFileName } from 'src/common/file-name.utils';
+import { validateFile } from 'src/s3service/file-validation/file-validation.utils';
+import { getFileName } from 'src/s3service/file-validation/file-name.utils';
 import { S3serviceService } from 'src/s3service/s3service.service';
 
 @Controller('music')
@@ -42,7 +42,9 @@ export class MusicControllers {
     @Body() createMusicDto: CreateMusicDto,
   ) {
     const image = files.find((file) => file.fieldname === 'image');
+    image.originalname = getFileName(image);
     const file = files.find((file) => file.fieldname === 'file');
+    file.originalname = getFileName(file);
     const fileUrl = await this.s3service.upload(
       createMusicDto.userId,
       file,

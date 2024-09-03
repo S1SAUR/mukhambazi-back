@@ -2,13 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AthorRepository } from './authors.repository';
-import * as s3Service from "../common/aws-s3"
+import * as s3Service from '../s3service/file-validation/aws-s3';
 
 @Injectable()
 export class AuthorsService {
+  constructor(private readonly AutorRepository: AthorRepository) {}
 
-  constructor(private readonly AutorRepository:AthorRepository){}
-  
   async create(createAuthorDto: CreateAuthorDto, url: string) {
     return await this.AutorRepository.create(createAuthorDto, url);
   }
@@ -22,7 +21,7 @@ export class AuthorsService {
   }
 
   async update(id: number, updateAuthorDto: UpdateAuthorDto) {
-    return await this.AutorRepository.update(id,updateAuthorDto);
+    return await this.AutorRepository.update(id, updateAuthorDto);
   }
 
   async remove(id: number) {

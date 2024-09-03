@@ -17,14 +17,17 @@ import { CreateAuthorDto } from './dto/create-author.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import multer, { diskStorage } from 'multer';
-import * as s3Service from '../common/aws-s3';
-import { validateFile } from 'src/common/file-validation.utils';
-import { getFileName } from 'src/common/file-name.utils';
+import * as s3Service from '../s3service/file-validation/aws-s3';
+import { validateFile } from 'src/s3service/file-validation/file-validation.utils';
+import { getFileName } from 'src/s3service/file-validation/file-name.utils';
 import { S3serviceService } from 'src/s3service/s3service.service';
 
 @Controller('authors')
 export class AuthorsController {
-  constructor(private readonly authorsService: AuthorsService, private readonly s3service: S3serviceService) {}
+  constructor(
+    private readonly authorsService: AuthorsService,
+    private readonly s3service: S3serviceService,
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -41,8 +44,12 @@ export class AuthorsController {
     image: Express.Multer.File,
     @Body() createAuthorDto: CreateAuthorDto,
   ) {
-    image.originalname = getFileName(image)
-    const url = await this.s3service.upload(createAuthorDto.userId ,image, "authorImgs");
+    image.originalname = getFileName(image);
+    const url = await this.s3service.upload(
+      createAuthorDto.userId,
+      image,
+      'authorImgs',
+    );
     return this.authorsService.create(createAuthorDto, url);
   }
 

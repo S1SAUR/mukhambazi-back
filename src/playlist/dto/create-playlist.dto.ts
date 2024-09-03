@@ -1,13 +1,14 @@
-import { IsArray, IsNumber, IsString } from "class-validator";
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreatePlaylistDto {
     @IsString()
     title: string
 
     @IsString()
-    discripton: string
+    description: string
 
     @IsArray()
+    @IsOptional()
     musicIds?: number[]
 
     @IsNumber()

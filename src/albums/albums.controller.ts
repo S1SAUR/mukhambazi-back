@@ -17,14 +17,15 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { validateFile } from 'src/common/file-validation.utils';
-import { getFileName } from 'src/common/file-name.utils';
+import { validateFile } from 'src/s3service/file-validation/file-validation.utils';
+import { getFileName } from 'src/s3service/file-validation/file-name.utils';
 import { S3serviceService } from 'src/s3service/s3service.service';
 
 @Controller('album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService,
-    private readonly s3Service: S3serviceService
+  constructor(
+    private readonly albumService: AlbumService,
+    private readonly s3Service: S3serviceService,
   ) {}
 
   @Post()
@@ -42,8 +43,12 @@ export class AlbumController {
     image: Express.Multer.File,
     @Body() createAlbumDto: CreateAlbumDto,
   ) {
-    image.originalname = getFileName(image)
-    const url = await this.s3Service.upload(createAlbumDto.userId, image, 'albumImgs');
+    image.originalname = getFileName(image);
+    const url = await this.s3Service.upload(
+      createAlbumDto.userId,
+      image,
+      'albumImgs',
+    );
     return await this.albumService.create(createAlbumDto, url);
   }
 
