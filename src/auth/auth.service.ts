@@ -19,7 +19,9 @@ export class AuthService {
       if(await Bcrypt.compare(createAuthDto.password,user.password)){
         let jwt = await this.jwtService.signAsync({id: user.id})   
         response.cookie('jwt',jwt, {httpOnly: true})       
-          return 'sucses'
+          return {
+            token: jwt
+          }
       }
     }
     throw new BadRequestException('bed request')
