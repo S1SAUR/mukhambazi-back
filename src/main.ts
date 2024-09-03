@@ -11,24 +11,19 @@ async function bootstrap() {
       whitelist: true,
       transform: true,
       transformOptions: {
-        enableImplicitConversion: true
-      }
+        enableImplicitConversion: true,
+      },
     }),
   );
-
-  app.enableCors({
-    origin: 'https://main.d3pvypseairen5.amplifyapp.com//',
-    credentials: true,
-  });
 
   app.use(cookieParser());
 
   const express = require('express');
   const cors = require('cors');
-  
+
   app.use(
     cors({
-      origin: 'https://main.d3pvypseairen5.amplifyapp.com/', // Your frontend URL
+      origin: 'https://main.d3pvypseairen5.amplifyapp.com', // Your frontend URL
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       preflightContinue: false,
       optionsSuccessStatus: 204,
