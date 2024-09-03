@@ -23,7 +23,7 @@ async function bootstrap() {
 
   app.use(
     cors({
-      origin: 'https://main.d3pvypseairen5.amplifyapp.com', // Your frontend URL
+      origin: 'https://chakrulos.ge', // Your frontend URL
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       preflightContinue: false,
       optionsSuccessStatus: 204,
