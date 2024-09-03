@@ -16,6 +16,10 @@ export class AuthorsService {
     return await this.AutorRepository.findAll();
   }
 
+  async findWithCategory(category: string) {
+    return await this.AutorRepository.findWithCategory(category);
+  }
+
   async findOne(id: number) {
     return await this.AutorRepository.findOne(id);
   }
