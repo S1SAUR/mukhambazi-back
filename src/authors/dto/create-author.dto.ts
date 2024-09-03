@@ -11,9 +11,11 @@ export class CreateAuthorDto {
   biography: string;
 
   @IsString()
-  country?: string;
+  Category: 'Charts' | 'Hits' | 'Artists'
+
+  @IsString()
+  Region: "Popular" | "Georgian" | "European";
 
   @IsNumber()
-  @IsOptional()
   userId: number;
 }
