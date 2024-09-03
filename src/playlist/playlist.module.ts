@@ -9,5 +9,6 @@ import { PlayListRepository } from './playlist.repository';
   imports:[TypeOrmModule.forFeature([PlaylistEntity])],
   controllers: [PlaylistController],
   providers: [PlaylistService, PlayListRepository],
+  exports:[PlayListRepository]
 })
 export class PlaylistModule {}
