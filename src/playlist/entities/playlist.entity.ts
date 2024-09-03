@@ -11,7 +11,7 @@ export class PlaylistEntity {
     title: string
 
     @Column()
-    discripton: string
+    description: string
 
     @ManyToMany(() => MusicEntity, (music) => music.playLists)
     @JoinTable()

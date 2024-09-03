@@ -23,6 +23,7 @@ export class MusicRepositories {
         'music.url',
         'music.authorId',
         'music.id',
+        'music.image',
       ])
       .getMany();
   }
@@ -39,21 +40,18 @@ export class MusicRepositories {
         'music.url',
         'music.authorId',
         'music.id',
+        'music.image',
       ])
       .getOne();
   }
 
-  async create(
-    data: CreateMusicDto,
-    fileUrl: string,
-    imageUrl: string,
-  ) {
+  async create(data: CreateMusicDto, fileUrl: string, imageUrl: string) {
     const music = new MusicEntity();
     music.name = data.name;
     music.authorId = data.authorId;
     music.url = fileUrl;
     music.image = imageUrl;
-    music.albumId = data.albumId
+    music.albumId = data.albumId;
     return this.musicsRepository.save(music);
   }
 
