@@ -22,27 +22,18 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { validateFile } from 'src/common/file-validation.utils';
 import { getFileName } from 'src/common/file-name.utils';
+import { S3serviceService } from 'src/s3service/s3service.service';
 
 @Controller('music')
 export class MusicControllers {
-  constructor(private readonly musicService: MusicServices) {}
+  constructor(
+    private readonly musicService: MusicServices,
+    private readonly s3service: S3serviceService,
+  ) {}
 
   @Post()
   @UseInterceptors(
     AnyFilesInterceptor({
-      storage: diskStorage({
-        destination: (req, file, callback) => {
-          const destinationPath =
-            file.fieldname === 'image'
-              ? './uploads/songCovers'
-              : './uploads/mp3Src';
-          fs.mkdirSync(destinationPath, { recursive: true });
-          callback(null, destinationPath);
-        },
-        filename: (req, file, callback) => {
-          callback(null, getFileName(file));
-        },
-      }),
       fileFilter: validateFile,
     }),
   )
@@ -52,7 +43,17 @@ export class MusicControllers {
   ) {
     const image = files.find((file) => file.fieldname === 'image');
     const file = files.find((file) => file.fieldname === 'file');
-    return this.musicService.create(createMusicDto, file, image);
+    const fileUrl = await this.s3service.upload(
+      createMusicDto.userId,
+      file,
+      'songSrc',
+    );
+    const imageUrl = await this.s3service.upload(
+      createMusicDto.userId,
+      image,
+      'songImage',
+    );
+    return this.musicService.create(createMusicDto, fileUrl, imageUrl);
   }
 
   @Get()

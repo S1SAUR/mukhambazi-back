@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateAuthorDto {
   @IsString()
@@ -12,4 +12,8 @@ export class CreateAuthorDto {
 
   @IsString()
   country?: string;
+
+  @IsNumber()
+  @IsOptional()
+  userId: number;
 }

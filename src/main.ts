@@ -11,8 +11,8 @@ async function bootstrap() {
       whitelist: true,
       transform: true,
       transformOptions: {
-        enableImplicitConversion: true
-      }
+        enableImplicitConversion: true,
+      },
     }),
   );
 
@@ -20,10 +20,10 @@ async function bootstrap() {
 
   const express = require('express');
   const cors = require('cors');
-  
+
   app.use(
     cors({
-      origin: 'https://main.d3pvypseairen5.amplifyapp.com', // Your frontend URL
+      origin: 'http://localhost:3000/', // Your frontend URL
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       preflightContinue: false,
       optionsSuccessStatus: 204,

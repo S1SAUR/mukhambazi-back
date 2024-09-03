@@ -29,13 +29,13 @@ export class AthorRepository {
       .getOne();
   }
 
-  async create(data: CreateAuthorDto, image: Express.Multer.File) {
+  async create(data: CreateAuthorDto, url: string) {
     const author = new AuthorEntity();
     author.biography = data.biography;
     author.country = data.country;
     author.firstName = data.firstName;
     author.lastName = data.lastName;
-    const url = `http://localhost:3001/uploads/authorImgs/${image.filename}`;
+   
     author.image = url;
 
     return await this.authorRepository.save(author);

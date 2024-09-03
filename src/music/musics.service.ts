@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateMusicDto } from './dto/create-musics.dto';
 import { UpdateMusicDto } from './dto/update-musics.dto';
 import { MusicRepositories } from './musics.repository';
+import * as s3Service from '../common/aws-s3';
 
 @Injectable()
 export class MusicServices {
@@ -9,10 +10,10 @@ export class MusicServices {
 
   create(
     createMusicDto: CreateMusicDto,
-    file: Express.Multer.File,
-    image: Express.Multer.File,
+    fileUrl: string,
+    imageUrl: string,
   ) {
-    return this.musicRepository.create(createMusicDto, file, image);
+    return this.musicRepository.create(createMusicDto, fileUrl, imageUrl);
   }
 
   findAll() {

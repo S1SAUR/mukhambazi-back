@@ -5,17 +5,17 @@ import { AlbumsRepository } from './albums.repository';
 
 @Injectable()
 export class AlbumService {
-  constructor (private readonly albumRepo: AlbumsRepository) {}
+  constructor(private readonly albumRepo: AlbumsRepository) {}
 
-  async create(createAlbumDto: CreateAlbumDto, image: Express.Multer.File) {
-    return await this.albumRepo.create(createAlbumDto, image)
+  async create(createAlbumDto: CreateAlbumDto, url: string) {
+    return await this.albumRepo.create(createAlbumDto, url);
   }
 
-  async   findAll() {
+  async findAll() {
     return await this.albumRepo.findAll();
   }
 
-  async   findOne(id: number) {
+  async findOne(id: number) {
     return await this.albumRepo.findOne(id);
   }
 
