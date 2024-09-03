@@ -62,16 +62,12 @@ export class PlayListRepository {
         let playList = new PlaylistEntity()
         playList.id = id
         Object.assign(playList,Column)
-        let playLisserch = await this.findOne(id)
+        let playLis = await this.findOne(id)
 
-        let musicsids = []
-        for(let i = 0; i < playLisserch.musics.length ;i++){
-          musicsids.push(playLisserch.musics[i].id)
-        }
-
+        console.log(playLis);
         
         if(musicIds){
-          playList.musics = await this.attach([...musicIds,...musicsids])
+          playList.musics = await this.attach(musicIds)
         }
         
         return this.playlistRepository.save(playList)
