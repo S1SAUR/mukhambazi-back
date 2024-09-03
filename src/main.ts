@@ -23,7 +23,7 @@ async function bootstrap() {
 
   app.use(
     cors({
-      origin: 'http://localhost:3000/', // Your frontend URL
+      origin: 'https://main.d3pvypseairen5.amplifyapp.com/', // Your frontend URL
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       preflightContinue: false,
       optionsSuccessStatus: 204,
