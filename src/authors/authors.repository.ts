@@ -31,7 +31,7 @@ export class AthorRepository {
 
 
   async findWithCategory(category: string) {
-    const categoryHits = ['Hits', 'Charts', 'Tops']
+    const categoryHits = ['Hits', 'Charts', 'Artists']
     const categoryRegions = ['Popular', 'Georgian', 'European']
     let categ = ''
     
