@@ -26,7 +26,6 @@ export class UsersRepository{
     .createQueryBuilder('users')
     .select([
       'users.id',
-      'users.name',
       'users.createdAt',
       'users.updatedAt',
       'users.delatedAt'
@@ -40,7 +39,6 @@ export class UsersRepository{
     .where('users.id = :id',{id})
     .select([
       'users.id',
-      'users.name',
       'users.createdAt',
       'users.updatedAt',
       'users.delatedAt'
