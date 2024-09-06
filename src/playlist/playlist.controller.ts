@@ -1,20 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { PlaylistService } from './playlist.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
+import { JwtAuthGuard } from './playlist.guard';
 
 @Controller('playlist')
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
-  @Get('/user')
-  findOneUsersAllPlayList(@Query('id') id: string){
-    return this.playlistService.findOneUsersAllPlayList(+id);
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  findOneUsersAllPlayList(@Req() req) {
+    const userId = req.user.id;
+    return this.playlistService.findOneUsersAllPlayList(userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createPlaylistDto: CreatePlaylistDto) {
-    return this.playlistService.create(createPlaylistDto);
+  create(@Body() createPlaylistDto: CreatePlaylistDto, @Req() req) {
+    const userId = req.user.id;
+    return this.playlistService.create(createPlaylistDto, userId);
   }
 
   @Get()
@@ -28,7 +43,10 @@ export class PlaylistController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePlaylistDto: UpdatePlaylistDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updatePlaylistDto: UpdatePlaylistDto,
+  ) {
     return this.playlistService.update(+id, updatePlaylistDto);
   }
 
@@ -36,5 +54,4 @@ export class PlaylistController {
   remove(@Param('id') id: string) {
     return this.playlistService.remove(+id);
   }
-
 }

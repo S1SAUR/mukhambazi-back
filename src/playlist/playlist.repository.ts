@@ -49,9 +49,11 @@ export class PlayListRepository {
         .getOne()
       }
     
-      async create(data: CreatePlaylistDto) {
-        let playlist = this.playlistRepository.create(data)
-
+      async create(data: CreatePlaylistDto, id: number) {
+        let playlist = new PlaylistEntity()
+        playlist.description = data.description
+        playlist.title = data.title
+        playlist.userId = id
         return this.playlistRepository.save(playlist)
         
       }
