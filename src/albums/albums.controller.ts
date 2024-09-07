@@ -72,6 +72,8 @@ export class AlbumController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    const image = (await this.albumService.findOne(+id)).image;
+    await this.s3Service.delete(image);
     return await this.albumService.remove(+id);
   }
 }

@@ -74,7 +74,11 @@ export class MusicControllers {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const image = (await this.musicService.findOne(+id)).image;
+    await this.s3service.delete(image);
+    const file = (await this.musicService.findOne(+id)).url;
+    await this.s3service.delete(file);
     return this.musicService.remove(+id);
   }
 }
