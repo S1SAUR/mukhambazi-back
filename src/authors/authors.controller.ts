@@ -54,8 +54,8 @@ export class AuthorsController {
   }
 
   @Get('category/:category')
-  findWithCategory(@Param("category") category: string) {
-    return this.authorsService.findWithCategory(category)
+  findWithCategory(@Param('category') category: string) {
+    return this.authorsService.findWithCategory(category);
   }
 
   @Get()
@@ -74,7 +74,9 @@ export class AuthorsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const image = (await this.authorsService.findOne(+id)).image;
+    await this.s3service.delete(image);
     return this.authorsService.remove(+id);
   }
 }

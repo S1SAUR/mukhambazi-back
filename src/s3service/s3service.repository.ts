@@ -19,4 +19,8 @@ export class S3serviceRepositroy {
 
     return await this.s3ServiceRepo.save(newUpload);
   }
+
+  async delete() {
+    
+  }
 }

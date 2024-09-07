@@ -23,4 +23,9 @@ export class S3serviceService {
     await this.s3ServiceRepository.upload(userId, url);
     return url;
   }
+
+  async delete(url: string) {
+    const name = url.split('amazonaws.com/')[1]
+    this.s3Client.deleteObject(name)
+  }
 }
