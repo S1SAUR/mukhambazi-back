@@ -42,7 +42,18 @@ export class AlbumsRepository {
     const album = await this.albumRepo
       .createQueryBuilder('album')
       .where('album.id = :id', { id })
-      .leftJoinAndSelect('album.musics', 'musics')
+      .leftJoin('album.musics', 'musics')
+      .leftJoin('musics.author', 'a')
+      .select([
+        'a.firstName',
+        'a.lastName',
+        'musics.name',
+        'musics.url',
+        'musics.authorId',
+        'musics.id',
+        'musics.image',
+        'album'
+      ])
       .getOne();
 
     return album;
