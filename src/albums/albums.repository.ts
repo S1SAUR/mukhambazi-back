@@ -23,7 +23,18 @@ export class AlbumsRepository {
   async findAll() {
     return await this.albumRepo
       .createQueryBuilder('album')
-      .leftJoinAndSelect('album.musics', 'musics')
+      .leftJoin('album.musics', 'musics')
+      .leftJoin('musics.author', 'a')
+      .select([
+        'a.firstName',
+        'a.lastName',
+        'musics.name',
+        'musics.url',
+        'musics.authorId',
+        'musics.id',
+        'musics.image',
+        'album'
+      ])
       .getMany();
   }
 

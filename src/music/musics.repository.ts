@@ -78,6 +78,16 @@ export class MusicRepositories {
     return await this.musicsRepository
       .createQueryBuilder('music')
       .where('music.name LIKE :search', { search: `${search}%` })
+      .leftJoin('music.author', 'a')
+      .select([
+        'a.firstName',
+        'a.lastName',
+        'music.name',
+        'music.url',
+        'music.authorId',
+        'music.id',
+        'music.image',
+      ])
       .getMany();
   }
 }
