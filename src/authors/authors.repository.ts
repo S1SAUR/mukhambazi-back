@@ -25,27 +25,38 @@ export class AthorRepository {
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.musics', 'm')
       .leftJoinAndSelect('author.album', 'a')
+      .leftJoin('m.author', 'auth')
+      .select([
+        'auth.firstName',
+        'auth.lastName',
+        'm.name',
+        'm.url',
+        'm.authorId',
+        'm.id',
+        'm.image',
+        'author',
+        'a'
+      ])
       .where('author.id = :id', { id })
       .getOne();
   }
 
-
   async findWithCategory(category: string) {
-    const categoryHits = ['Hits', 'Charts', 'Artists']
-    const categoryRegions = ['Popular', 'Georgian', 'European']
-    let categ = ''
-    
-    if (categoryHits.includes(category)) categ = 'Category'
-    else if (categoryRegions.includes(category)) categ = 'Region'
-    else categ = 'endpoint does not exist'
+    const categoryHits = ['Hits', 'Charts', 'Artists'];
+    const categoryRegions = ['Popular', 'Georgian', 'European'];
+    let categ = '';
 
-    return await this.authorRepository.createQueryBuilder('author')
-    .leftJoinAndSelect('author.musics', 'm')
-    .leftJoinAndSelect('author.album', 'a')
-    .where(`author.${categ} = :category`, { category })
-    .getMany();
+    if (categoryHits.includes(category)) categ = 'Category';
+    else if (categoryRegions.includes(category)) categ = 'Region';
+    else categ = 'endpoint does not exist';
+
+    return await this.authorRepository
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.musics', 'm')
+      .leftJoinAndSelect('author.album', 'a')
+      .where(`author.${categ} = :category`, { category })
+      .getMany();
   }
-
 
   async create(data: CreateAuthorDto, url: string) {
     const author = new AuthorEntity();
@@ -54,7 +65,7 @@ export class AthorRepository {
     author.Category = data.Category;
     author.firstName = data.firstName;
     author.lastName = data.lastName;
-   
+
     author.image = url;
 
     return await this.authorRepository.save(author);
@@ -82,7 +93,9 @@ export class AthorRepository {
     return await this.authorRepository
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.musics', 'm')
-      .where('author.firstName OR author.firstName LIKE :search', { search: `${search}%` })
+      .where('author.firstName OR author.firstName LIKE :search', {
+        search: `${search}%`,
+      })
       .getMany();
   }
 }
