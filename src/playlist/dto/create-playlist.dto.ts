@@ -12,6 +12,7 @@ export class CreatePlaylistDto {
     musicIds?: number[]
 
     @IsNumber()
+    @IsOptional()
     userId: number
 
 }

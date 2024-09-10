@@ -13,10 +13,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { S3serviceModule } from './s3service/s3service.module';
-
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [ConfigModule.forRoot(),
+  imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
@@ -29,7 +30,11 @@ import { S3serviceModule } from './s3service/s3service.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
-      serveRoot: '/uploads/'
+      serveRoot: '/uploads/',
+    }),
+    JwtModule.register({
+      secret: 'secret',
+      global: true,
     }),
     MusicModule,
     AuthorsModule,
@@ -43,5 +48,4 @@ import { S3serviceModule } from './s3service/s3service.module';
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule {}

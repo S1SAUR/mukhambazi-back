@@ -8,8 +8,8 @@ export class PlaylistService {
 
   constructor( private readonly playListRepository: PlayListRepository){}
 
-  async create(createPlaylistDto: CreatePlaylistDto) {
-    return await this.playListRepository.create(createPlaylistDto);
+  async create(createPlaylistDto: CreatePlaylistDto, id: number) {
+    return await this.playListRepository.create(createPlaylistDto, id);
   }
 
   async findAll() {
