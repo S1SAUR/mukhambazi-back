@@ -16,28 +16,26 @@ import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { diskStorage } from 'multer';
-
-import { validateFile } from 'src/common/file-validation.utils';
-import { getFileName } from 'src/common/file-name.utils';
+import multer, { diskStorage } from 'multer';
+import * as s3Service from '../s3service/file-validation/aws-s3';
+import { validateFile } from 'src/s3service/file-validation/file-validation.utils';
+import { getFileName } from 'src/s3service/file-validation/file-name.utils';
+import { S3serviceService } from 'src/s3service/s3service.service';
 
 @Controller('authors')
 export class AuthorsController {
-  constructor(private readonly authorsService: AuthorsService) {}
+  constructor(
+    private readonly authorsService: AuthorsService,
+    private readonly s3service: S3serviceService,
+  ) {}
 
   @Post()
   @UseInterceptors(
     FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads/authorImgs',
-        filename: (req, image, callback) => {
-          callback(null, getFileName(image));
-        },
-      }),
       fileFilter: validateFile,
     }),
   )
-  create(
+  async create(
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({ fileType: '.(jpeg|jpg|png)' })
@@ -46,7 +44,18 @@ export class AuthorsController {
     image: Express.Multer.File,
     @Body() createAuthorDto: CreateAuthorDto,
   ) {
-    return this.authorsService.create(createAuthorDto, image);
+    image.originalname = getFileName(image);
+    const url = await this.s3service.upload(
+      createAuthorDto.userId,
+      image,
+      'authorImgs',
+    );
+    return this.authorsService.create(createAuthorDto, url);
+  }
+
+  @Get('category/:category')
+  findWithCategory(@Param('category') category: string) {
+    return this.authorsService.findWithCategory(category);
   }
 
   @Get()
@@ -65,7 +74,9 @@ export class AuthorsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const image = (await this.authorsService.findOne(+id)).image;
+    await this.s3service.delete(image);
     return this.authorsService.remove(+id);
   }
 }

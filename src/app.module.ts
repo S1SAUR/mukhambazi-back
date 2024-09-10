@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
+import { S3serviceModule } from './s3service/s3service.module';
 
 
 @Module({
@@ -37,6 +38,7 @@ import { ConfigModule } from '@nestjs/config';
     UsersModule,
     PlaylistModule,
     AuthModule,
+    S3serviceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

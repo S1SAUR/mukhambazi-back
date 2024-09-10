@@ -1,6 +1,7 @@
 import { MaxLength, MinLength } from "class-validator";
 import { FavoriteEntity } from "src/favorites/entities/favorite.entity";
 import { PlaylistEntity } from "src/playlist/entities/playlist.entity";
+import { S3service } from "src/s3service/entities/s3service.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
@@ -8,9 +9,6 @@ export class UserEntity {
 
     @PrimaryGeneratedColumn()
     id: number
-
-    @Column()
-    name: string
 
     @Column({unique: true})
     email: string
@@ -22,6 +20,9 @@ export class UserEntity {
 
     @OneToMany(() => PlaylistEntity,(playlist) => playlist.user)
     playlists: PlaylistEntity[]
+
+    @OneToMany(() => S3service, s3service => s3service.user)
+    uploads: S3service[]
 
     @OneToMany(() => FavoriteEntity,(favorite) => favorite.user)
     favorites: FavoriteEntity[]

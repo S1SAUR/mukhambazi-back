@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateAuthorDto {
   @IsString()
@@ -11,5 +11,11 @@ export class CreateAuthorDto {
   biography: string;
 
   @IsString()
-  country?: string;
+  Category: 'Charts' | 'Hits' | 'Artists'
+
+  @IsString()
+  Region: "Popular" | "Georgian" | "European";
+
+  @IsNumber()
+  userId: number;
 }

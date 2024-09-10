@@ -17,24 +17,21 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { validateFile } from 'src/common/file-validation.utils';
-import { getFileName } from 'src/common/file-name.utils';
+import { validateFile } from 'src/s3service/file-validation/file-validation.utils';
+import { getFileName } from 'src/s3service/file-validation/file-name.utils';
+import { S3serviceService } from 'src/s3service/s3service.service';
 
 @Controller('album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService) {}
+  constructor(
+    private readonly albumService: AlbumService,
+    private readonly s3Service: S3serviceService,
+  ) {}
 
   @Post()
   @UseInterceptors(
     FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads/ablumCovers',
-        filename: (req, image, callback) => {
-          callback(null, getFileName(image));
-        },
-      }),
-      fileFilter: validateFile
+      fileFilter: validateFile,
     }),
   )
   async create(
@@ -46,7 +43,13 @@ export class AlbumController {
     image: Express.Multer.File,
     @Body() createAlbumDto: CreateAlbumDto,
   ) {
-    return await this.albumService.create(createAlbumDto, image);
+    image.originalname = getFileName(image);
+    const url = await this.s3Service.upload(
+      createAlbumDto.userId,
+      image,
+      'albumImgs',
+    );
+    return await this.albumService.create(createAlbumDto, url);
   }
 
   @Get()
@@ -69,6 +72,8 @@ export class AlbumController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
+    const image = (await this.albumService.findOne(+id)).image;
+    await this.s3Service.delete(image);
     return await this.albumService.remove(+id);
   }
 }

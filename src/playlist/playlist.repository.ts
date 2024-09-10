@@ -66,8 +66,16 @@ export class PlayListRepository {
 
         console.log(playLis);
         
+        let playLisserch = await this.findOne(id)
+
+        let musicsids = []
+        for(let i = 0; i < playLisserch.musics.length ;i++){
+          musicsids.push(playLisserch.musics[i].id)
+        }
+
+        
         if(musicIds){
-          playList.musics = await this.attach(musicIds)
+          playList.musics = await this.attach([...musicIds,...musicsids])
         }
         
         return this.playlistRepository.save(playList)

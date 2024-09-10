@@ -8,5 +8,9 @@ export class CreateMusicDto {
   authorId: number;
 
   @IsNumber()
-  albumId: number
+  albumId: number;
+
+  @IsNumber()
+  @IsOptional()
+  userId: number;
 }

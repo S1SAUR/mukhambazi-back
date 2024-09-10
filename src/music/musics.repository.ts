@@ -23,6 +23,7 @@ export class MusicRepositories {
         'music.url',
         'music.authorId',
         'music.id',
+        'music.image',
       ])
       .getMany();
   }
@@ -39,23 +40,18 @@ export class MusicRepositories {
         'music.url',
         'music.authorId',
         'music.id',
+        'music.image',
       ])
       .getOne();
   }
 
-  async create(
-    data: CreateMusicDto,
-    file: Express.Multer.File,
-    image: Express.Multer.File,
-  ) {
+  async create(data: CreateMusicDto, fileUrl: string, imageUrl: string) {
     const music = new MusicEntity();
-    const url = `http://localhost:3001/uploads/mp3Src/${file.filename}`;
-    const imageUrl = `http://localhost:3001/uploads/songCovers/${image.filename}`;
     music.name = data.name;
     music.authorId = data.authorId;
-    music.url = url;
+    music.url = fileUrl;
     music.image = imageUrl;
-    music.albumId = data.albumId
+    music.albumId = data.albumId;
     return this.musicsRepository.save(music);
   }
 
@@ -82,6 +78,16 @@ export class MusicRepositories {
     return await this.musicsRepository
       .createQueryBuilder('music')
       .where('music.name LIKE :search', { search: `${search}%` })
+      .leftJoin('music.author', 'a')
+      .select([
+        'a.firstName',
+        'a.lastName',
+        'music.name',
+        'music.url',
+        'music.authorId',
+        'music.id',
+        'music.image',
+      ])
       .getMany();
   }
 }

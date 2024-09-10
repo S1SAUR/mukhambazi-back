@@ -20,29 +20,20 @@ import { UpdateMusicDto } from './dto/update-musics.dto';
 import { FileInterceptor, AnyFilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { validateFile } from 'src/common/file-validation.utils';
-import { getFileName } from 'src/common/file-name.utils';
+import { validateFile } from 'src/s3service/file-validation/file-validation.utils';
+import { getFileName } from 'src/s3service/file-validation/file-name.utils';
+import { S3serviceService } from 'src/s3service/s3service.service';
 
 @Controller('music')
 export class MusicControllers {
-  constructor(private readonly musicService: MusicServices) {}
+  constructor(
+    private readonly musicService: MusicServices,
+    private readonly s3service: S3serviceService,
+  ) {}
 
   @Post()
   @UseInterceptors(
     AnyFilesInterceptor({
-      storage: diskStorage({
-        destination: (req, file, callback) => {
-          const destinationPath =
-            file.fieldname === 'image'
-              ? './uploads/songCovers'
-              : './uploads/mp3Src';
-          fs.mkdirSync(destinationPath, { recursive: true });
-          callback(null, destinationPath);
-        },
-        filename: (req, file, callback) => {
-          callback(null, getFileName(file));
-        },
-      }),
       fileFilter: validateFile,
     }),
   )
@@ -51,8 +42,20 @@ export class MusicControllers {
     @Body() createMusicDto: CreateMusicDto,
   ) {
     const image = files.find((file) => file.fieldname === 'image');
+    image.originalname = getFileName(image);
     const file = files.find((file) => file.fieldname === 'file');
-    return this.musicService.create(createMusicDto, file, image);
+    file.originalname = getFileName(file);
+    const fileUrl = await this.s3service.upload(
+      createMusicDto.userId,
+      file,
+      'songSrc',
+    );
+    const imageUrl = await this.s3service.upload(
+      createMusicDto.userId,
+      image,
+      'songImage',
+    );
+    return this.musicService.create(createMusicDto, fileUrl, imageUrl);
   }
 
   @Get()
@@ -71,7 +74,11 @@ export class MusicControllers {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const image = (await this.musicService.findOne(+id)).image;
+    await this.s3service.delete(image);
+    const file = (await this.musicService.findOne(+id)).url;
+    await this.s3service.delete(file);
     return this.musicService.remove(+id);
   }
 }
