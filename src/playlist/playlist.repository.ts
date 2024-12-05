@@ -62,6 +62,10 @@ export class PlayListRepository {
         let playList = new PlaylistEntity()
         playList.id = id
         Object.assign(playList,Column)
+        let playLis = await this.findOne(id)
+
+        console.log(playLis);
+        
         let playLisserch = await this.findOne(id)
 
         let musicsids = []
